@@ -6,9 +6,8 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="English2k23.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="English2k23">
-
-
+        Title="English2k23"
+        Content="{Binding Content}">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -17,40 +16,5 @@
     </Design.DataContext>
 
 
-    <DockPanel>
-        <Menu DockPanel.Dock="Top" Height="35" Background="blue">
-            <MenuItem Header="_File" Margin="20,0,0, 0" VerticalAlignment="Center">
-                <MenuItem Header="_New"/>
-                <Separator/>
-                <MenuItem Header="_Open"/>
-                <Separator/>
-                <MenuItem Header="_Save"/>
-                <Separator/>
-                <MenuItem Header="_Exit"/>
-            </MenuItem>
-
-        </Menu>
-        <StackPanel Orientation="Horizontal" Margin="30,0,30,0" Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel>
-                <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Button Command="{Binding TestButtonClicked}" HorizontalAlignment="Center">
-                    <Panel>
-                        <Image Source="/Assets/icons/addBtn.png"/>
-                    </Panel>
-                </Button>
-            </StackPanel>
-            <StackPanel>
-                <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Button Command="{Binding TestButtonClicked}" HorizontalAlignment="Center">
-                    <Panel>
-                        <Image Source="/Assets/icons/deckCreated.png"/>
-                    </Panel>
-                </Button>
-            </StackPanel>
-         </StackPanel>
-
-
-    </DockPanel>
-
-
 </Window>
+

@@ -4,38 +4,26 @@ using ReactiveUI;
 
 namespace English2k23.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
+public class MainWindowViewModel : ViewModelBase
 {
-    public string Greeting => "Welcome to Avalonia!";
-    public string GreetingAgain => "Welcome to Avalonia again!";
+    ViewModelBase content;
 
-    public new event PropertyChangedEventHandler? PropertyChanged;
-
-    private string _buttonText = "Click me!";
-    public string ButtonText
+    public MainWindowViewModel()
     {
-        get => _buttonText;
-        set
-        {
-            _buttonText = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonText)));
-        }
+        Content =  new HomeViewModel();
     }
 
-    public void TestButtonClicked() => ButtonText = "Hello you!";
-
-    private string _buttonText2 = "Click me!";
-    public string ButtonText2
+    public ViewModelBase Content
     {
-        get => _buttonText2;
-        set
-        {
-            _buttonText2 = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonText2)));
-        }
+        get => content;
+        private set => this.RaiseAndSetIfChanged(ref content, value);
     }
 
-    public string Title => "Welcome to Engligh2k23";
+    public void TestButtonClicked() {
+        Content = new AnotherViewModel();
+    }
 
-    public void TestButtonClicked2() => ButtonText2 = "Hello you!";
+    public void TestButtonClicked2() {
+        Content = new AnotherViewModel2();
+    }
 }

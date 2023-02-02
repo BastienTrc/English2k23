@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="English2k23.Views.HomeView">
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Height="35" Background="blue">
+            <MenuItem Header="_File" Margin="20,0,0, 0" VerticalAlignment="Center">
+                <MenuItem Header="_New"/>
+                <Separator/>
+                <MenuItem Header="_Open"/>
+                <Separator/>
+                <MenuItem Header="_Save"/>
+                <Separator/>
+                <MenuItem Header="_Exit"/>
+            </MenuItem>
+
+        </Menu>
+        <StackPanel Orientation="Horizontal" Margin="30,0,30,0" Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button Command="{Binding $parent[Window].DataContext.TestButtonClicked}" HorizontalAlignment="Center">
+                    <Panel>
+                        <Image Source="/Assets/icons/addBtn.png"/>
+                    </Panel>
+                </Button>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button Command="{Binding $parent[Window].DataContext.TestButtonClicked2}" HorizontalAlignment="Center">
+                    <Panel>
+                        <Image Source="/Assets/icons/deckCreated.png"/>
+                    </Panel>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+
+    </DockPanel>
+
+
+</UserControl>
+
+

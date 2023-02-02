@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="English2k23.Views.AnotherView">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Height="35" Background="blue">
+            <MenuItem Header="_File" Margin="20,0,0, 0" VerticalAlignment="Center">
+                <MenuItem Header="_New" />
+                <Separator />
+                <MenuItem Header="_Open" />
+                <Separator />
+                <MenuItem Header="_Save" />
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+
+        </Menu>
+        <StackPanel>
+            <TextBlock> Ceci est un test</TextBlock>
+            <TextBlock> Another test</TextBlock>
+            <TextBlock> Another another test</TextBlock>
+        </StackPanel>
+    </DockPanel>
+
+</UserControl>
