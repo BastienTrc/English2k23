@@ -6,6 +6,16 @@
              x:Class="English2k23.Views.AnotherView">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="35" Background="blue">
+            <Button Command="{Binding $parent[Window].DataContext.ReturnButtonClicked}">
+                <Panel>
+                    <Image Source="/Assets/icons/navigationPrevious.png"/>
+                </Panel>
+            </Button>
+            <Button Command="{Binding $parent[Window].DataContext.HomeButtonClicked}">
+                <Panel>
+                    <Image Source="/Assets/icons/navigationHome.png"/>
+                </Panel>
+            </Button>
             <MenuItem Header="_File" Margin="20,0,0, 0" VerticalAlignment="Center">
                 <MenuItem Header="_New" />
                 <Separator />
@@ -15,12 +25,14 @@
                 <Separator />
                 <MenuItem Header="_Exit" />
             </MenuItem>
-
         </Menu>
         <StackPanel>
             <TextBlock> Ceci est un test</TextBlock>
             <TextBlock> Another test</TextBlock>
             <TextBlock> Another another test</TextBlock>
+            <Button Command="{Binding $parent[Window].DataContext.TestButtonClicked2}">
+                AnotherView 2
+            </Button>
         </StackPanel>
     </DockPanel>
 
