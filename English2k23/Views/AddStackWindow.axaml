@@ -1,0 +1,32 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:English2k23.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="English2k23.Views.AddStackWindow"
+        Title="MusicStoreWindow"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True">
+
+    <Design.DataContext>
+        <viewModels:AddStackViewModel />
+    </Design.DataContext>
+    <StackPanel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+
+        <TextBox Margin="40" Text="{Binding StackName}" Watermark="Enter your stack name" />
+        <TextBox Margin="40" Text="{Binding StackDescription}" Watermark="Enter your stack description" />
+        <Button Content="Select a picture for the stack" Command="{Binding OpenFileDialogCommand}" />
+        <Button Content="Validate" Command="{Binding Validate}" />
+
+    </StackPanel>
+</Window>

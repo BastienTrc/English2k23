@@ -1,56 +1,48 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Collections;
-using Avalonia.Controls;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reactive;
+using English2k23.Models;
 using ReactiveUI;
 
 namespace English2k23.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ReactiveObject, IScreen
 {
-    ViewModelBase content;
-    private Stack viewStack;
+    public RoutingState Router { get; } = new RoutingState();
+
+    // The command that navigates a user to first view model.
+    public ReactiveCommand<Unit, IRoutableViewModel> GoEdit { get; }
+    public ReactiveCommand<Unit, IRoutableViewModel> GoPractice { get; }
+
+    // The command that navigates a user back.
+
+    public void GoBack()
+    {
+        Router.NavigateBack.Execute();
+    }
+
+    public void GoHome()
+    {
+        Router.NavigationStack.Clear();
+    }
 
     public MainWindowViewModel()
     {
-        viewStack = new Stack();
-        var hmv = new HomeViewModel();
-        viewStack.Push(hmv);
-        Content =  hmv;
-    }
+        var game = new Game(Guid.NewGuid(), "MyGame", "Hello");
+        // Manage the routing state. Use the Router.Navigate.Execute
+        // command to navigate to different view models.
+        //
+        // Note, that the Navigate.Execute method accepts an instance
+        // of a view model, this allows you to pass parameters to
+        // your view models, or to reuse existing view models.
 
-    public ViewModelBase Content
-    {
-        get => content;
-        private set => this.RaiseAndSetIfChanged(ref content, value);
-    }
-
-    public void TestButtonClicked()
-    {
-        var avm = new AnotherViewModel();
-        viewStack.Push(avm);
-        Content = avm;
-    }
-
-    public void TestButtonClicked2()
-    {
-        var avm2 = new AnotherViewModel2();
-        viewStack.Push(avm2);
-        Content = avm2;
-    }
-    
-    public void HomeButtonClicked() {
-        viewStack.Clear();
-        var hvm = new HomeViewModel();
-        viewStack.Push(hvm);
-        Content = hvm;
-    }
-    public void ReturnButtonClicked()
-    {
-        if (viewStack.Count > 1)
-        {
-            viewStack.Pop();
-            Content = (ViewModelBase)viewStack.Peek();
-        }
+        GoEdit = ReactiveCommand.CreateFromObservable(
+            () => Router.Navigate.Execute(new ManageStackViewModel(this, game))
+        );
+        GoPractice = ReactiveCommand.CreateFromObservable(
+            () => Router.Navigate.Execute(new PracticeViewModel(this, game))
+        );
     }
 }

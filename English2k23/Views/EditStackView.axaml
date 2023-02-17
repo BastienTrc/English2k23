@@ -1,0 +1,75 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:English2k23.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="English2k23.Views.EditStackView">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <viewModels:EditStackViewModel />
+    </Design.DataContext>
+    <Grid ColumnDefinitions="1.2*, 4, 1.8*"
+          Background="Green">
+
+
+        <Grid Grid.Column="0"
+              RowDefinitions="*,6*,*" ColumnDefinitions="*,*,*,*"
+              VerticalAlignment="Top" HorizontalAlignment="Center">
+
+            <TextBlock Text="Edit your set!"
+                       FontSize="24"
+                       VerticalAlignment="Top" HorizontalAlignment="Center"
+                       Grid.ColumnSpan="4" Grid.Row="0"
+                       Margin="15,10,10,10" />
+
+            <ListBox Name="QuestionList" Items="{Binding QuestionList}"
+                     SelectedItem="{Binding SelectedQuestion}"
+                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
+                     MaxHeight="700" MaxWidth="350"
+                     HorizontalAlignment="Center"
+                     Margin="10">
+
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" ItemWidth="100" Margin="10" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="Black" CornerRadius="4" Padding="4">
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="{Binding Expression}" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+            <Button Content="Let's add a question"
+                    Command="{Binding AddQuestionCommand}"
+                    Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    Margin="10,10,10,15" />
+        </Grid>
+
+        <GridSplitter Grid.Column="1" Background="Red" ResizeDirection="Columns" />
+
+        <Grid Grid.Column="2"
+              RowDefinitions="*,*" ColumnDefinitions="*,*,*"
+              VerticalAlignment="Top" HorizontalAlignment="Center">
+
+            <Border Background="Black" CornerRadius="4" Padding="4">
+                <StackPanel Spacing="5">
+                    <TextBox Text="{Binding SelectedQuestion.Expression}" />
+                    <TextBox Text="{Binding SelectedQuestion.Definition}" />
+                    <TextBox Text="{Binding SelectedQuestion.McqAnswers}" />
+                    <TextBox Text="{Binding SelectedQuestion.PathToVideo}" />
+                </StackPanel>
+            </Border>
+
+        </Grid>
+    </Grid>
+</UserControl>

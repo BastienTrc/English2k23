@@ -3,18 +3,78 @@
         xmlns:vm="using:English2k23.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:reactiveUi="http://reactiveui.net"
+        xmlns:english2K23="clr-namespace:English2k23"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="English2k23.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="English2k23"
-        Content="{Binding Content}">
+        Title="English2k23">
+
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Menu Height="35" Background="blue" Grid.Row="0" VerticalAlignment="Top">
+            <Button Command="{Binding GoBack}">
+                <Panel>
+                    <Image Source="/Assets/icons/navigationPrevious.png" />
+                </Panel>
+            </Button>
+            <TextBlock Text="{Binding Router.NavigationStack.Count}"></TextBlock>
+            <Button Command="{Binding GoHome}">
+                <Panel>
+                    <Image Source="/Assets/icons/navigationHome.png" />
+                </Panel>
+            </Button>
+            <MenuItem Header="_File" Margin="20,0,0, 0" VerticalAlignment="Center">
+                <MenuItem Header="_New" />
+                <Separator />
+                <MenuItem Header="_Open" />
+                <Separator />
+                <MenuItem Header="_Save" />
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+
+        </Menu>
+        <reactiveUi:RoutedViewHost Grid.Row="1" Router="{Binding Router}">
+            <reactiveUi:RoutedViewHost.DefaultContent>
+                <StackPanel Orientation="Horizontal" Margin="30,0,30,0" Spacing="20" HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <StackPanel>
+                        <!-- <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
+                        <Button Command="{Binding GoEdit}" HorizontalAlignment="Center">
+                            <Panel>
+                                <Image Source="/Assets/icons/addBtn.png" />
+                            </Panel>
+                        </Button>
+                        <TextBlock VerticalAlignment="Center"> Edit questions </TextBlock>
+                    </StackPanel>
+                    <StackPanel>
+                        <!-- <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
+                        <Button Command="{Binding GoPractice}" HorizontalAlignment="Center">
+                            <Panel>
+                                <Image Source="/Assets/icons/deckCreated.png" />
+                            </Panel>
+                        </Button>
+                        <TextBlock VerticalAlignment="Center"> Train! </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </reactiveUi:RoutedViewHost.DefaultContent>
+            <reactiveUi:RoutedViewHost.ViewLocator>
+                <!-- See AppViewLocator.cs section below -->
+                <english2K23:AppViewLocator />
+            </reactiveUi:RoutedViewHost.ViewLocator>
+        </reactiveUi:RoutedViewHost>
+    </Grid>
 
 
 </Window>
-

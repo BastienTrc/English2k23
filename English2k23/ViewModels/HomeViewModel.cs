@@ -1,36 +1,34 @@
 using System.ComponentModel;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Windows.Input;
+using Avalonia;
+using English2k23.Models;
+using English2k23.Views;
+using ReactiveUI;
 
 namespace English2k23.ViewModels;
 
-public class HomeViewModel : ViewModelBase, INotifyPropertyChanged
+public class HomeViewModel : ReactiveObject, IRoutableViewModel
 {
-    public string Greeting => "Welcome to Avalonia!";
-    public string GreetingAgain => "Welcome to Avalonia again!";
+    // Reference to IScreen that owns the routable view model.
+    public IScreen HostScreen { get; }
 
-    public new event PropertyChangedEventHandler? PropertyChanged;
+    // Unique identifier for the routable view model.
+    public string UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
 
-    private string _buttonText = "Click me!";
-    public string ButtonText
+    public ReactiveCommand<Unit, IRoutableViewModel> GoEdit { get; }
+    public ReactiveCommand<Unit, IRoutableViewModel> GoPractice { get; }
+
+    public HomeViewModel(IScreen screen, Game game)
     {
-        get => _buttonText;
-        set
-        {
-            _buttonText = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonText)));
-        }
+        HostScreen = screen;
+        GoEdit = ReactiveCommand.CreateFromObservable(
+            () => HostScreen.Router.Navigate.Execute(new ManageStackViewModel(HostScreen, game))
+        );
+
+        GoPractice = ReactiveCommand.CreateFromObservable(
+            () => HostScreen.Router.Navigate.Execute(new PracticeViewModel(HostScreen, game))
+        );
     }
-
-    private string _buttonText2 = "Click me!";
-    public string ButtonText2
-    {
-        get => _buttonText2;
-        set
-        {
-            _buttonText2 = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ButtonText2)));
-        }
-    }
-
-    public string Title => "Welcome to Engligh2k23";
-
 }

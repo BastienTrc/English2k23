@@ -7,11 +7,16 @@ using ReactiveUI;
 
 namespace English2k23.Views;
 
-public partial class HomeView : ReactiveUserControl<HomeViewModel>
+public partial class EditStackView : ReactiveUserControl<EditStackViewModel>
 {
-    public HomeView()
+    public EditStackView()
     {
         this.WhenActivated(disposables => { });
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    private void InitializeComponent()
+    {
         AvaloniaXamlLoader.Load(this);
     }
 }
