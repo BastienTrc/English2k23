@@ -17,17 +17,13 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
     public ReactiveCommand<Question, Unit> QuestionDeleted { get; }
     private QuestionStack QuestionStack { get; }
     public AvaloniaList<Question> QuestionList { get; }
-    
+
     public Question SelectedQuestion
     {
         get => _selectedQuestion;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _selectedQuestion, value);
-            Console.WriteLine(_selectedQuestion.Expression);
-        }
+        set { this.RaiseAndSetIfChanged(ref _selectedQuestion, value); }
     }
-    
+
     public EditStackViewModel(IScreen hostScreen, Game game, QuestionStack questionStack)
     {
         this.game = game;
@@ -43,8 +39,8 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
         _selectedQuestion = QuestionList[0];
 
         QuestionDeleted = ReactiveCommand.Create<Question>(
-            quest => game.RemoveQuestionFromStack(questionStack,quest));
-        
+            quest => game.RemoveQuestionFromStack(questionStack, quest));
+
         //Handle add existing question command
         ShowDialogExist = new Interaction<AddExistingQuestionViewModel, AvaloniaList<Question>?>();
 
@@ -59,7 +55,7 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
                 {
                     if (!questionStack.getQuestions().Contains(quest))
                     {
-                        game.AddQuestionToStack(questionStack,quest);
+                        game.AddQuestionToStack(questionStack, quest);
                     }
                 }
             }
@@ -70,7 +66,7 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
                 messageBoxStandardWindow.Show();
             }
         });
-        
+
         //Handle add new question command
         ShowDialogNew = new Interaction<AddNewQuestionViewModel, Question?>();
 
@@ -82,7 +78,7 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
             if (result != null)
             {
                 game.AddQuestionToGame(result);
-                game.AddQuestionToStack(questionStack,result);
+                game.AddQuestionToStack(questionStack, result);
             }
             else
             {
@@ -91,13 +87,14 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
                 messageBoxStandardWindow.Show();
             }
         });
+
     }
-    
+
     // Handle add existing question command
     public ICommand AddExistingQuestionCommand { get; }
 
     public Interaction<AddExistingQuestionViewModel, AvaloniaList<Question>?> ShowDialogExist { get; }
-    
+
     // Handle add new question command
     public ICommand AddNewQuestionCommand { get; }
 

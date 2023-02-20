@@ -18,7 +18,11 @@ public partial class ManageStackView : ReactiveUserControl<ManageStackViewModel>
             })
         {
             this.WhenActivated(disposable =>
-                disposable(ViewModel!.ShowDialog.RegisterHandler(mainWindow.DoShowDialogAsync)));
+            {
+                disposable(ViewModel!.ShowDialog.RegisterHandler(mainWindow.DoShowDialogAsync));
+                disposable(ViewModel!.ShowFileDialog.RegisterHandler(mainWindow.DoShowFileDialogAsync));
+            });
+
         }
 
         AvaloniaXamlLoader.Load(this);

@@ -1,33 +1,59 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Avalonia.Collections;
+using Avalonia.Data;
+using ReactiveUI;
 
 namespace English2k23.Models;
 
-public class QuestionStack
+public class QuestionStack : ReactiveObject
 {
     private AvaloniaList<Question> questionList = new();
-    private string? PictureURL { get; set; }
+    private string? _pictureUrl;
     private string _name;
     private string _description;
 
     public string Description
     {
         get => _description;
-        set => _description = value ?? throw new ArgumentNullException($"Description can't be null or empty");
-    }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new DataValidationException("Description field can't be empty");
+            }
+            this.RaiseAndSetIfChanged(ref _description, value);
+        }}
 
     public string Name
     {
         get => _name;
-        set => _name = value ?? throw new ArgumentNullException($"Name can't be null or empty");
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new DataValidationException("Name field can't be empty");
+            }
+            this.RaiseAndSetIfChanged(ref _name, value);
+        }
+    }
+
+    public string? PictureUrl
+    {
+        get => _pictureUrl;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _pictureUrl, value);
+        }
     }
 
     public QuestionStack(string name, string description, string? pictureUrl)
     {
         _name = name;
         _description = description;
-        PictureURL = pictureUrl;
+        PictureUrl = pictureUrl;
+
     }
 
 

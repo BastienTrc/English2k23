@@ -5,13 +5,16 @@
              xmlns:viewModels="clr-namespace:English2k23.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="English2k23.Views.ManageStackView">
+    <UserControl.Styles>
+        <StyleInclude Source="/Assets/Styles/Style.xaml" />
+    </UserControl.Styles>
+
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <viewModels:ManageStackViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="1.2*, 4, 1.8*"
-          Background="Green">
+    <Grid ColumnDefinitions="1.2*, 4, 1.8*">
 
 
         <Grid Grid.Column="0"
@@ -26,6 +29,8 @@
 
             <ListBox Name="StackList" Items="{Binding QuestionStackList}"
                      Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
+                     Classes="StackList"
+                     SelectedItem="{Binding StackSelected}"
                      MaxHeight="700" MaxWidth="350"
                      HorizontalAlignment="Center"
                      Margin="10">
@@ -38,44 +43,68 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="Black" CornerRadius="4" Padding="4">
-                            <StackPanel Spacing="5">
-                                <TextBlock Text="{Binding Name}" />
-                                <TextBlock Text="{Binding Description}" />
-                                <TextBlock Text="{Binding PictureURL}" />
-                            </StackPanel>
+                        <Border Background="White" CornerRadius="4" Padding="4">
+                            <TextBlock Text="{Binding Name}"
+                                       Classes="ItemBg" HorizontalAlignment="Center" />
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
 
             </ListBox>
-            <Button Content="Let's add a set"
+            <Button Content="Add a set"
+                    Classes="BorderButton"
                     Command="{Binding AddStackCommand}"
                     Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="1"
                     HorizontalAlignment="Center"
                     Margin="10,10,10,15" />
         </Grid>
 
-        <GridSplitter Grid.Column="1" Background="Red" ResizeDirection="Columns" />
+        <GridSplitter Grid.Column="1" Background="white" ResizeDirection="Columns" />
 
         <Grid Grid.Column="2"
-              RowDefinitions="*,*" ColumnDefinitions="*,*,*"
+              RowDefinitions="*,*,8*" ColumnDefinitions="*,*,*"
               VerticalAlignment="Top" HorizontalAlignment="Center">
             <TextBlock Text="Set preview"
                        FontSize="24"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Grid.ColumnSpan="3"
-                       Grid.Row="0" />
-            <Button Grid.Row="1" Grid.Column="0"
+                       Grid.Row="0"
+                       Margin="10,10,10,20" />
+
+            <Button Grid.Row="1" Grid.Column="0" Content="Edit"
+                    Classes="BorderButton"
                     Command="{Binding GoStackEdit}" CommandParameter="{Binding #StackList.SelectedItem}"
-                    HorizontalAlignment="Center">
-                Edit
-            </Button>
-            <Button Grid.Row="1" Grid.Column="2" Command="{Binding StackDeleted}"
-                    CommandParameter="{Binding #StackList.SelectedItem}" HorizontalAlignment="Center">
-                Delete
-            </Button>
+                    IsEnabled="{Binding IsEnabled}"
+                    HorizontalAlignment="Center" Margin="10" />
+
+            <Button Content="Change picture"
+                    Classes="BorderButton"
+                    Grid.Row="1" Grid.Column="1" Command="{Binding OpenFileDialogCommand}"
+                    IsEnabled="{Binding IsEnabled}"
+                    HorizontalAlignment="Center" Margin="10" />
+
+            <Button Content="Delete"
+                    Classes="BorderButton"
+                    Grid.Row="1" Grid.Column="2" Command="{Binding StackDeleted}"
+                    CommandParameter="{Binding #StackList.SelectedItem}"
+                    IsEnabled="{Binding IsEnabled}"
+                    HorizontalAlignment="Center" Margin="10" />
+
+            <Grid Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0" RowDefinitions="*,*,2*,6*" Margin="15,10">
+                <TextBox Grid.Row="0" Margin="5,10"
+                         Text="{Binding #StackList.SelectedItem.Name}" />
+                <TextBox Grid.Row="1" Margin="5"
+                         Text="{Binding #StackList.SelectedItem.Description}" />
+                <Border Grid.Row="2" Classes="TextBoxBlock" Margin="5,5,5,20">
+                    <TextBlock Grid.Row="2"
+                               Text="{Binding #StackList.SelectedItem.PictureUrl}" Classes="TextBoxBlock"
+                               TextWrapping="Wrap" />
+                </Border>
+                <Panel Grid.Row="3" Margin="5">
+                    <Image Source="{Binding ImageToLoad}" MaxWidth="400" MaxHeight="500" />
+                </Panel>
+            </Grid>
         </Grid>
     </Grid>
 

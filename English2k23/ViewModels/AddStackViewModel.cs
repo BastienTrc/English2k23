@@ -2,6 +2,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using Avalonia.Controls;
+using Avalonia.Data;
 using English2k23.Models;
 using ReactiveUI;
 
@@ -9,29 +10,63 @@ namespace English2k23.ViewModels;
 
 public class AddStackViewModel : ViewModelBase
 {
-    private string? PictureUrl { get; set; }
+    private string _pictureUrl;
     private string _stackName;
     private string _stackDescription;
+    private bool _isEnabled;
 
+    // Show open dialog file
     public ICommand OpenFileDialogCommand { get; }
-    public ReactiveCommand<Unit, QuestionStack?> Validate { get; }
+    public Interaction<Unit, string?> ShowDialog { get; }
 
-    public string StackDescription
+    // Validate Fields and create questionStack
+    public ReactiveCommand<string, QuestionStack?> Validate { get; }
+
+    public bool IsEnabled
     {
-        get => _stackDescription;
-        set => this.RaiseAndSetIfChanged(ref _stackName, value);
+        get => _isEnabled;
+        set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
     }
 
     public string StackName
     {
         get => _stackName;
-        set => this.RaiseAndSetIfChanged(ref _stackDescription, value);
+        set
+        {
+            IsEnabled = !(string.IsNullOrWhiteSpace(_stackName) || string.IsNullOrWhiteSpace(_stackDescription));
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                IsEnabled = false;
+                throw new DataValidationException("Name field can't be empty");
+            }
+            this.RaiseAndSetIfChanged(ref _stackName, value);
+        }
+    }
+
+    public string StackDescription
+    {
+        get => _stackDescription;
+        set
+        {
+            IsEnabled = !(string.IsNullOrWhiteSpace(_stackName) || string.IsNullOrWhiteSpace(_stackDescription));
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                IsEnabled = false;
+                throw new DataValidationException("Description field can't be empty");
+            }
+            this.RaiseAndSetIfChanged(ref _stackDescription, value);
+        }
+    }
+
+    public string? PictureUrl
+    {
+        get => _pictureUrl;
+        set => this.RaiseAndSetIfChanged(ref _pictureUrl, value ?? "null");
     }
 
     public AddStackViewModel()
     {
         ShowDialog = new Interaction<Unit, string?>();
-
         OpenFileDialogCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             // No need to create and give a viewModel as OpenFileDialog don't need one
@@ -41,16 +76,8 @@ public class AddStackViewModel : ViewModelBase
             PictureUrl = result;
         });
 
-        Validate = ReactiveCommand.Create(() =>
-        {
-            if (_stackName is null || _stackDescription is null)
-            {
-                return null;
-            }
-
-            return new QuestionStack(_stackName, _stackDescription, PictureUrl);
-        });
+        Validate = ReactiveCommand.Create<string, QuestionStack?>(cancelToken =>
+            cancelToken == "Cancel" ? null : new QuestionStack(_stackName!, _stackDescription!, PictureUrl));
     }
 
-    public Interaction<Unit, string?> ShowDialog { get; }
 }

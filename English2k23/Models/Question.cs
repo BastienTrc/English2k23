@@ -1,8 +1,10 @@
 using System;
+using Avalonia.Data;
+using ReactiveUI;
 
 namespace English2k23.Models;
 
-public class Question
+public class Question : ReactiveObject
 {
     private bool VideoMode { get; set; }
     private string _expression;
@@ -24,19 +26,41 @@ public class Question
     public string Expression
     {
         get => _expression;
-        set => _expression = value ?? throw new ArgumentNullException($"Expression can't be null or empty");
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new DataValidationException("Expression field can't be empty");
+            }
+            this.RaiseAndSetIfChanged(ref _expression, value);
+        }
     }
 
     public string Definition
     {
         get => _definition;
-        set => _definition = value ?? throw new ArgumentNullException($"Definition can't be null or empty");
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new DataValidationException("Definition field can't be empty");
+            }
+            this.RaiseAndSetIfChanged(ref _definition, value);
+        }
+
     }
 
     public string McqAnswers
     {
         get => _MCQAnswers;
-        set => _MCQAnswers = value ?? throw new ArgumentNullException($"MCQ answers can't be null or empty");
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new DataValidationException("MCQ answers field can't be empty");
+            }
+            this.RaiseAndSetIfChanged(ref _MCQAnswers, value);
+        }
     }
 
     public string PathToVideo
@@ -44,14 +68,13 @@ public class Question
         get => _pathToVideo;
         set
         {
-            if (value == null)
+            if (string.IsNullOrWhiteSpace(value))
             {
-                _pathToVideo = "ERROR_EMPTY";
+                _pathToVideo = "Default value";
+                return;
             }
-            else
-            {
-                _pathToVideo = value;
-            }
+
+            _pathToVideo = value;
         }
     }
 }

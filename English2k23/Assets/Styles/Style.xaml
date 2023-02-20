@@ -1,0 +1,60 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:controls="https://github.com/avaloniaui">
+
+    <Styles.Resources>
+        <SolidColorBrush x:Key="MainGreen" Color="#ff193d3e" />
+        <SolidColorBrush x:Key="ItemBg" Color="#ff0f2525" />
+    </Styles.Resources>
+    <Style Selector="TextBlock.TextBoxBlock">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="#66000000"/>
+        <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="MinWidth" Value="64"/>
+        <Setter Property="Padding" Value="10,6,6,5"/>
+
+
+    </Style>
+    <Style Selector="Border.TextBoxBlock">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#99ffffff"/>
+        <Setter Property="CornerRadius" Value="3"/>
+    </Style>
+
+    <Style Selector="Window.MainHostScreen">
+        <Setter Property="Background" Value="{StaticResource MainGreen}"/>
+
+    </Style>
+
+    <Style Selector="Menu.TopMenu">
+        <Setter Property="Background" Value="white"/>
+    </Style>
+
+    <Style Selector="TextBlock.GreenText">
+        <Setter Property="Foreground" Value="{StaticResource MainGreen}"/>
+    </Style>
+
+    <Style Selector="Button">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="Button.BorderButton">
+        <Setter Property="BorderBrush" Value="white"/>
+        <Setter Property="BorderThickness" Value="1,1,1,1"/>
+        <Setter Property="CornerRadius" Value="5"/>
+    </Style>
+
+    <Style Selector="ListBox.StackList">
+        <Setter Property="Background" Value="Transparent"/>
+
+        <Setter Property="BorderBrush" Value="white"/>
+        <Setter Property="BorderThickness" Value="1,1,1,1"/>
+        <Setter Property="CornerRadius" Value="5"/>
+    </Style>
+
+    <Style Selector="TextBlock.ItemBg">
+        <Setter Property="Foreground" Value="{StaticResource ItemBg}"/>
+        <Setter Property="Background" Value="white"/>
+    </Style>
+
+</Styles>

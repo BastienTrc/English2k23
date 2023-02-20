@@ -20,6 +20,10 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
     public void GoBack()
     {
+        if (Router.NavigationStack.Count != 1)
+        {
+            return;
+        }
         Router.NavigateBack.Execute();
     }
 
