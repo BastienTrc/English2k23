@@ -9,7 +9,7 @@ namespace English2k23.Models;
 public class Game
 {
     public AvaloniaList<QuestionStack> QuestionStacks { get; } = new();
-    private AvaloniaList<Question> availableQuestions = new();
+    public AvaloniaList<Question> availableQuestions { get; } = new();
 
     private string Name { get; set; }
     private string Description { get; set; }
@@ -54,7 +54,7 @@ public class Game
         questionStack.getQuestions().Add(question);
     }
 
-    private void RemoveQuestionFromStack(QuestionStack questionStack, Question question)
+    public void RemoveQuestionFromStack(QuestionStack questionStack, Question question)
     {
         questionStack.getQuestions().Remove(question);
     }

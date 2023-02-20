@@ -48,14 +48,27 @@
                 </ListBox.ItemTemplate>
 
             </ListBox>
-            <Button Content="Let's add a question"
-                    Command="{Binding AddQuestionCommand}"
-                    Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="1"
-                    HorizontalAlignment="Center"
-                    Margin="10,10,10,15" />
+            <Grid ColumnDefinitions="*,*" RowDefinitions="*,*"
+                  Grid.Row="2" Grid.ColumnSpan="4" Grid.Column="0"
+                  Margin="10,10,10,15">
+                <Button Content="Let's add an existing question"
+                        Command="{Binding AddExistingQuestionCommand}"
+                        Grid.Column="0" Grid.Row="0"
+                        HorizontalAlignment="Center"
+                        />
+                <Button Content="Let's add a new question"
+                        Command="{Binding AddNewQuestionCommand}"
+                        Grid.Column="1" Grid.Row="0"
+                        HorizontalAlignment="Center"/>
+                <Button Content="Delete question"
+                        Command="{Binding QuestionDeleted}"
+                        CommandParameter="{Binding SelectedQuestion}"
+                        Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" 
+                        HorizontalAlignment="Center"/>
+            </Grid>
         </Grid>
 
-        <GridSplitter Grid.Column="1" Background="Red" ResizeDirection="Columns" />
+            <GridSplitter Grid.Column="1" Background="Red" ResizeDirection="Columns" />
 
         <Grid Grid.Column="2"
               RowDefinitions="*,*" ColumnDefinitions="*,*,*"
@@ -69,7 +82,6 @@
                     <TextBox Text="{Binding SelectedQuestion.PathToVideo}" />
                 </StackPanel>
             </Border>
-
         </Grid>
     </Grid>
 </UserControl>

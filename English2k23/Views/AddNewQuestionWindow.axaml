@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:English2k23.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="English2k23.Views.AddNewQuestionWindow"
+        Title="AddNewQuestionWindow"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True">
+    
+    <Design.DataContext>
+        <viewModels:AddNewQuestionViewModel />
+    </Design.DataContext>
+    <StackPanel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+
+        <TextBox Margin="40" Text="{Binding QuestionExpression}" Watermark="Enter the expression" />
+        <TextBox Margin="40" Text="{Binding QuestionDefinition}" Watermark="Enter the definition"/>
+        <TextBox Margin="40" Text="{Binding QuestionAnswers}" Watermark="Enter answers separated by a semicolon"/>
+        <Button Content="Select a video" Command="{Binding OpenFileDialogCommand}" />
+        <Button Content="Validate" Command="{Binding Validate}" />
+
+    </StackPanel>
+</Window>
