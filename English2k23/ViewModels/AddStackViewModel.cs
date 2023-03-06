@@ -1,7 +1,6 @@
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
-using Avalonia.Controls;
 using Avalonia.Data;
 using English2k23.Models;
 using ReactiveUI;
@@ -10,9 +9,9 @@ namespace English2k23.ViewModels;
 
 public class AddStackViewModel : ViewModelBase
 {
-    private string _pictureUrl;
-    private string _stackName;
-    private string _stackDescription;
+    private string? _pictureUrl;
+    private string? _stackName;
+    private string? _stackDescription;
     private bool _isEnabled;
 
     // Show open dialog file
@@ -28,7 +27,7 @@ public class AddStackViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
     }
 
-    public string StackName
+    public string? StackName
     {
         get => _stackName;
         set
@@ -43,7 +42,7 @@ public class AddStackViewModel : ViewModelBase
         }
     }
 
-    public string StackDescription
+    public string? StackDescription
     {
         get => _stackDescription;
         set

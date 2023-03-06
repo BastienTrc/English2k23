@@ -1,10 +1,8 @@
-using System.ComponentModel;
+
 using System.Reactive;
-using System.Reactive.Linq;
-using System.Windows.Input;
-using Avalonia;
+
 using English2k23.Models;
-using English2k23.Views;
+
 using ReactiveUI;
 
 namespace English2k23.ViewModels;
@@ -28,7 +26,7 @@ public class HomeViewModel : ReactiveObject, IRoutableViewModel
         );
 
         GoPractice = ReactiveCommand.CreateFromObservable(
-            () => HostScreen.Router.Navigate.Execute(new PracticeViewModel(HostScreen, game))
+            () => HostScreen.Router.Navigate.Execute(new TrainViewModel(HostScreen, game))
         );
     }
 }

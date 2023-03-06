@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿
 using System.Reactive;
 using English2k23.Models;
 using ReactiveUI;
@@ -20,7 +17,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
 
     public void GoBack()
     {
-        if (Router.NavigationStack.Count != 1)
+        if (Router.NavigationStack.Count < 1)
         {
             return;
         }
@@ -46,7 +43,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
             () => Router.Navigate.Execute(new ManageStackViewModel(this, game))
         );
         GoPractice = ReactiveCommand.CreateFromObservable(
-            () => Router.Navigate.Execute(new PracticeViewModel(this, game))
+            () => Router.Navigate.Execute(new TrainViewModel(this, game))
         );
     }
 }

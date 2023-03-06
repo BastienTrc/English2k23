@@ -35,8 +35,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Views\Practice.Viewaxaml.cs">
-            <DependentUpon>PracticeView.axaml</DependentUpon>
+        <Compile Update="Views\TrainView.axaml.cs">
+            <DependentUpon>TrainView.axaml</DependentUpon>
         </Compile>
     </ItemGroup>
     

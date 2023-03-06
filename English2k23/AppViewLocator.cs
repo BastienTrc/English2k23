@@ -10,8 +10,12 @@ public class AppViewLocator : ReactiveUI.IViewLocator
     {
         HomeViewModel context => new HomeView { DataContext = context },
         ManageStackViewModel context => new ManageStackView { DataContext = context },
-        PracticeViewModel context => new PracticeView { DataContext = context },
+        TrainViewModel context => new TrainView { DataContext = context },
         EditStackViewModel context => new EditStackView { DataContext = context },
+        PracticeViewModel context => new PracticeView { DataContext = context },
+        CompetitiveViewModel context => new CompetitiveView { DataContext = context },
+        ResultsViewModel context => new ResultsView { DataContext = context },
+
         _ => throw new ArgumentOutOfRangeException(nameof(viewModel))
     };
 }

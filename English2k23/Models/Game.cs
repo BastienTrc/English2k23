@@ -9,7 +9,7 @@ namespace English2k23.Models;
 public class Game
 {
     public AvaloniaList<QuestionStack> QuestionStacks { get; } = new();
-    public AvaloniaList<Question> availableQuestions { get; } = new();
+    public AvaloniaList<Question?> availableQuestions { get; } = new();
 
     private string Name { get; set; }
     private string Description { get; set; }
@@ -33,12 +33,12 @@ public class Game
         CardFrequency = CardFrequencyEnum.Middle;
     }
 
-    public void AddQuestionToGame(Question question)
+    public void AddQuestionToGame(Question? question)
     {
         availableQuestions.Add(question);
     }
 
-    public void RemoveQuestionFromGame(Question question)
+    public void RemoveQuestionFromGame(Question? question)
     {
         // Need to remove question from every stack it may be present
         foreach (var stack in QuestionStacks)
@@ -49,12 +49,12 @@ public class Game
         availableQuestions.Remove(question);
     }
 
-    public void AddQuestionToStack(QuestionStack questionStack, Question question)
+    public void AddQuestionToStack(QuestionStack questionStack, Question? question)
     {
         questionStack.getQuestions().Add(question);
     }
 
-    public void RemoveQuestionFromStack(QuestionStack questionStack, Question question)
+    public void RemoveQuestionFromStack(QuestionStack questionStack, Question? question)
     {
         questionStack.getQuestions().Remove(question);
     }

@@ -7,13 +7,13 @@ namespace English2k23.Models;
 public class Question : ReactiveObject
 {
     private bool VideoMode { get; set; }
-    private string _expression;
-    private string _definition;
-    private string _MCQAnswers;
+    private string? _expression;
+    private string? _definition;
+    private string? _MCQAnswers;
     private string _pathToVideo;
 
 
-    public Question(string expression, string definition, string mcqAnswers, string pathToVideo, bool videoMode)
+    public Question(string? expression, string? definition, string? mcqAnswers, string pathToVideo, bool videoMode)
     {
         _expression = expression;
         _definition = definition;
@@ -23,7 +23,7 @@ public class Question : ReactiveObject
     }
 
 
-    public string Expression
+    public string? Expression
     {
         get => _expression;
         set
@@ -36,7 +36,7 @@ public class Question : ReactiveObject
         }
     }
 
-    public string Definition
+    public string? Definition
     {
         get => _definition;
         set
@@ -50,7 +50,7 @@ public class Question : ReactiveObject
 
     }
 
-    public string McqAnswers
+    public string? McqAnswers
     {
         get => _MCQAnswers;
         set

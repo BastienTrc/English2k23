@@ -9,12 +9,12 @@ namespace English2k23.Models;
 
 public class QuestionStack : ReactiveObject
 {
-    private AvaloniaList<Question> questionList = new();
+    private AvaloniaList<Question?> questionList = new();
     private string? _pictureUrl;
-    private string _name;
-    private string _description;
+    private string? _name;
+    private string? _description;
 
-    public string Description
+    public string? Description
     {
         get => _description;
         set
@@ -26,7 +26,7 @@ public class QuestionStack : ReactiveObject
             this.RaiseAndSetIfChanged(ref _description, value);
         }}
 
-    public string Name
+    public string? Name
     {
         get => _name;
         set
@@ -48,7 +48,7 @@ public class QuestionStack : ReactiveObject
         }
     }
 
-    public QuestionStack(string name, string description, string? pictureUrl)
+    public QuestionStack(string? name, string? description, string? pictureUrl)
     {
         _name = name;
         _description = description;
@@ -57,7 +57,7 @@ public class QuestionStack : ReactiveObject
     }
 
 
-    public AvaloniaList<Question> getQuestions()
+    public AvaloniaList<Question?> getQuestions()
     {
         return questionList;
     }

@@ -1,7 +1,6 @@
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
-using Avalonia.Controls;
 using English2k23.Models;
 using ReactiveUI;
 
@@ -9,15 +8,15 @@ namespace English2k23.ViewModels;
 
 public class AddNewQuestionViewModel : ViewModelBase
 {
-    private string? VideoURL { get; set; }
-    private string _questionExpression;
-    private string _questionDefinition;
-    private string _questionAnswers;
+    private string? VideoUrl { get; set; }
+    private string? _questionExpression;
+    private string? _questionDefinition;
+    private string? _questionAnswers;
     
     public ICommand OpenFileDialogCommand { get; }
     public ReactiveCommand<Unit, Question?> Validate { get; }
     
-    public string QuestionExpression
+    public string? QuestionExpression
     {
         get => _questionExpression;
         set
@@ -26,7 +25,7 @@ public class AddNewQuestionViewModel : ViewModelBase
         }
     }
     
-    public string QuestionDefinition
+    public string? QuestionDefinition
     {
         get => _questionDefinition;
         set
@@ -35,7 +34,7 @@ public class AddNewQuestionViewModel : ViewModelBase
         }
     }
     
-    public string QuestionAnswers
+    public string? QuestionAnswers
     {
         get => _questionAnswers;
         set
@@ -54,7 +53,7 @@ public class AddNewQuestionViewModel : ViewModelBase
             var result = await ShowDialog.Handle(new Unit());
 
             // If PictureURL wasn't specified then it contains "null"
-            VideoURL = result;
+            VideoUrl = result;
         });
 
         Validate = ReactiveCommand.Create(() =>
@@ -64,11 +63,11 @@ public class AddNewQuestionViewModel : ViewModelBase
                 return null;
             }
             
-            if (VideoURL == null)
+            if (VideoUrl == null)
             {
                 return new Question(_questionExpression, _questionDefinition, _questionAnswers,"",false);
             }
-            return new Question(_questionExpression, _questionDefinition, _questionAnswers,VideoURL,true);
+            return new Question(_questionExpression, _questionDefinition, _questionAnswers,VideoUrl,true);
             });
     }
 

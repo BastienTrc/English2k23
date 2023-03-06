@@ -6,17 +6,56 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="English2k23.Views.PracticeView">
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <viewModels:PracticeViewModel />
+        <viewModels:PracticeViewModel/>
     </Design.DataContext>
-    <DockPanel>
+    <UserControl.Styles>
+        <StyleInclude Source="/Assets/Styles/Style.xaml" />
+    </UserControl.Styles>
+    <Panel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
+            <TextBlock Text="Progression" HorizontalAlignment="Center"/>
+            <ProgressBar
+                VerticalAlignment="Top"
+                Value="{Binding ProgressBarValue}"
+                         ShowProgressText="True"
+                Margin="5"
+                Classes="ProgressQuestionBar"/>
+            <TextBlock HorizontalAlignment="Center" Text="{Binding CurrQuestion.Definition}"/>
+            <TextBlock
+                HorizontalAlignment="Center"
+                Text="{Binding Score, StringFormat=Score : {0}}"
+                Margin="10"/>
+            <TextBlock
+                HorizontalAlignment="Center"
+                Text="{Binding InfoMsg}"
+                Margin="10" IsVisible="{Binding InfoMsg}"/>
+            <ProgressBar Maximum="1000" Value="{Binding TimerValue}" />
+            <TextBox HorizontalAlignment="Center" Text="{Binding UserAnswer}" IsVisible="{Binding ShowUserAnswer}"/>
+            <ListBox HorizontalAlignment="Center" Items="{Binding AnswersList}"
+                     SelectedItem="{Binding McqChosed}" IsVisible="{Binding ShowMcq}">
+                <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" ItemWidth="100" Margin="10" MaxWidth="240"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+            </ListBox>
+            <TextBlock HorizontalAlignment="Center" Text="waiting for implementation" IsVisible="{Binding ShowVideo}"/>
 
-        <StackPanel>
-            <TextBlock> Ceci est un test 2 </TextBlock>
-            <TextBlock> Another test 2 </TextBlock>
-            <TextBlock> Another another test 2</TextBlock>
-            <Button Command="{Binding OneButtonClicked}"> TestBtn</Button>
+            <StackPanel Orientation="Horizontal" Spacing="20">
+                <Button HorizontalAlignment="Center" Command="{Binding DisplayNone}" IsVisible="{Binding !AnswerStyleChosen}">
+                    <Image Source="../Assets/icons/NoHint.png" MaxHeight="100" MaxWidth="100"/>
+                </Button>
+                <Button HorizontalAlignment="Center" Command="{Binding DisplayMcq}" IsVisible="{Binding !AnswerStyleChosen}">
+                    <Image Source="../Assets/icons/Mcq.png" MaxHeight="100" MaxWidth="100"/>
+                </Button>
+                <Button HorizontalAlignment="Center" Command="{Binding DisplayVideo}" IsVisible="{Binding !AnswerStyleChosen}">
+                    <Image Source="../Assets/icons/video.png" MaxHeight="100" MaxWidth="100"/>
+                </Button>
+            </StackPanel>
+
+            <Button HorizontalAlignment="Center" Content="Validate"
+                    Command="{Binding Validate}" IsVisible="{Binding AnswerStyleChosen}"/>
         </StackPanel>
-    </DockPanel>
+    </Panel>
+
 </UserControl>

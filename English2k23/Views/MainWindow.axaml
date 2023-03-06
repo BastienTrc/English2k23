@@ -55,7 +55,7 @@
                     <StackPanel>
                         <Button Command="{Binding GoEdit}" HorizontalAlignment="Center">
                             <Panel>
-                                <Image Source="/Assets/icons/addBtn.png" />
+                                <Image Source="/Assets/icons/editSset.png" MaxHeight="300" MaxWidth="300"/>
                             </Panel>
                         </Button>
                         <TextBlock HorizontalAlignment="Center"> Edit questions </TextBlock>
@@ -64,7 +64,7 @@
                         <!-- <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
                         <Button Command="{Binding GoPractice}" HorizontalAlignment="Center">
                             <Panel>
-                                <Image Source="/Assets/icons/deckCreated.png" />
+                                <Image Source="/Assets/icons/practice.png" MaxHeight="300" MaxWidth="300"/>
                             </Panel>
                         </Button>
                         <TextBlock HorizontalAlignment="Center"> Train! </TextBlock>

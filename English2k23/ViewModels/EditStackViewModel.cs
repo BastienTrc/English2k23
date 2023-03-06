@@ -9,31 +9,27 @@ namespace English2k23.ViewModels;
 
 public class EditStackViewModel : ReactiveObject, IRoutableViewModel
 {
-    private Game game;
-    private Question _selectedQuestion;
+    private Question? _selectedQuestion;
 
     public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
     public IScreen HostScreen { get; }
     public ReactiveCommand<Question, Unit> QuestionDeleted { get; }
-    private QuestionStack QuestionStack { get; }
-    public AvaloniaList<Question> QuestionList { get; }
+    public AvaloniaList<Question?> QuestionList { get; }
 
-    public Question SelectedQuestion
+    public Question? SelectedQuestion
     {
         get => _selectedQuestion;
-        set { this.RaiseAndSetIfChanged(ref _selectedQuestion, value); }
+        set => this.RaiseAndSetIfChanged(ref _selectedQuestion, value);
     }
 
     public EditStackViewModel(IScreen hostScreen, Game game, QuestionStack questionStack)
     {
-        this.game = game;
         HostScreen = hostScreen;
-        QuestionStack = questionStack;
         QuestionList = questionStack.getQuestions();
 
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 4; i++)
         {
-            QuestionList.Add(new Question("expr" + i, "def", "1 ; 2 ; 3", "path", false));
+            QuestionList.Add(new Question("expr" + i, "def"+i, $"{i}_1; {i}_2 ; {i}_3; {i}_4", "path", false));
         }
 
         _selectedQuestion = QuestionList[0];
@@ -48,7 +44,7 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
         {
             var addExistingQuestionViewModel = new AddExistingQuestionViewModel(game);
 
-            var result = await ShowDialogExist.Handle(addExistingQuestionViewModel);
+            AvaloniaList<Question>? result = await ShowDialogExist.Handle(addExistingQuestionViewModel);
             if (result != null)
             {
                 foreach (var quest in result)
@@ -63,7 +59,7 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
             {
                 var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                     .GetMessageBoxStandardWindow("title", "Error occured");
-                messageBoxStandardWindow.Show();
+                await messageBoxStandardWindow.Show();
             }
         });
 
@@ -84,7 +80,7 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
             {
                 var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
                     .GetMessageBoxStandardWindow("title", "Error occured");
-                messageBoxStandardWindow.Show();
+                await messageBoxStandardWindow.Show();
             }
         });
 

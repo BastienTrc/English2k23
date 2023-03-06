@@ -1,21 +1,19 @@
-using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using Avalonia;
 using Avalonia.Collections;
-using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using DynamicData.Binding;
+using Avalonia.Platform;
 using English2k23.Models;
 using ReactiveUI;
-using ReactiveUI.Validation.Abstractions;
-using ReactiveUI.Validation.Contexts;
 
 
 namespace English2k23.ViewModels;
 
 public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
 {
+    private readonly Bitmap? _default;
 
     private bool _isEnabled;
     public bool IsEnabled
@@ -24,8 +22,8 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
         set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
     }
 
-    private Bitmap _imageToLoad;
-    public Bitmap ImageToLoad
+    private Bitmap? _imageToLoad;
+    public Bitmap? ImageToLoad
     {
         get => _imageToLoad;
         set => this.RaiseAndSetIfChanged(ref _imageToLoad, value);
@@ -39,7 +37,7 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
         {
             this.RaiseAndSetIfChanged(ref _stackSelected, value);
             IsEnabled = _stackSelected is not null;
-            LoadImage(value.PictureUrl);
+            LoadImage(value?.PictureUrl);
         }
     }
 
@@ -96,6 +94,16 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
             if (StackSelected != null) StackSelected.PictureUrl = result;
             LoadImage(result);
         });
+
+        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+        try
+        {
+            _default = new Bitmap(assets?.Open(new Uri(@"avares://English2k23/Assets/icons/default.png")));
+        }
+        catch
+        {
+            _default =  new Bitmap(@"../../../Assets/icons/default.png");
+        }
     }
 
     // Handle add stack command
@@ -109,9 +117,10 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
         {
             ImageToLoad = new Bitmap(pictureUrl) ;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            ImageToLoad = new Bitmap("/Users/bastienturco/Desktop/English2k23/English2k23/bin/Debug/net7.0/Pictures/default.png");
+            ImageToLoad = _default;
+
         }
 
     }

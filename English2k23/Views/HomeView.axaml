@@ -16,7 +16,7 @@
                 <!-- <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
                 <Button Command="{Binding GoEdit}" HorizontalAlignment="Center">
                     <Panel>
-                        <Image Source="/Assets/icons/addBtn.png" />
+                        <Image Source="/Assets/icons/editSset.png" />
                     </Panel>
                 </Button>
                 <TextBlock VerticalAlignment="Center"> Edit questions </TextBlock>
@@ -25,7 +25,7 @@
                 <!-- <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
                 <Button Command="{Binding GoPractice}" HorizontalAlignment="Center">
                     <Panel>
-                        <Image Source="/Assets/icons/deckCreated.png" />
+                        <Image Source="/Assets/icons/practice.png" />
                     </Panel>
                 </Button>
                 <TextBlock VerticalAlignment="Center"> Train! </TextBlock>

@@ -1,8 +1,5 @@
 using System.Reactive;
-using System.Reactive.Linq;
-using System.Windows.Input;
 using Avalonia.Collections;
-using Avalonia.Controls;
 using English2k23.Models;
 using ReactiveUI;
 
@@ -12,7 +9,7 @@ public class AddExistingQuestionViewModel : ViewModelBase
 {
     
     public ReactiveCommand<Unit, AvaloniaList<Question>?> Validate { get; }
-    public AvaloniaList<Question> QuestionList { get; }
+    public AvaloniaList<Question?> QuestionList { get; }
     public AvaloniaList<Question> SelectedItems { get; } = new AvaloniaList<Question>();
 
     public AddExistingQuestionViewModel(Game game)
