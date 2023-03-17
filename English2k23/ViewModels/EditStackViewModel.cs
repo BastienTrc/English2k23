@@ -52,6 +52,27 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
                 game.AddQuestionToStack(questionStack, result);
             }
         });
+        
+        ShowEditVideoDialog = new Interaction<Unit, string?>();
+        EditVideoCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            // No need to create and give a viewModel as OpenFileDialog don't need one
+            var result = await ShowEditVideoDialog.Handle(new Unit()) ?? "";
+
+            // If PathToVideo wasn't specified then it contains "null"
+            if (SelectedQuestion != null && !string.IsNullOrEmpty(result))
+            {
+                SelectedQuestion.PathToVideo = result;
+                SelectedQuestion.VideoMode = true;
+            }
+        });
+
+        VideoDeleted = ReactiveCommand.Create<Question>(
+            quest =>
+            {
+                quest.PathToVideo = "";
+                quest.VideoMode = false;
+            });
     }
 
     public ReactiveCommand<Question, Unit> QuestionDeleted { get; }
@@ -69,10 +90,14 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
     public Interaction<AddExistingQuestionViewModel, AvaloniaList<Question>?> ShowDialogExist { get; }
 
     // Handle add new question command
-    public ICommand AddNewQuestionCommand { get; }
-
-    public Interaction<AddNewQuestionViewModel, Question?> ShowDialogNew { get; }
-
-    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
-    public IScreen HostScreen { get; }
-}
+     public ICommand AddNewQuestionCommand { get; }
+     public Interaction<AddNewQuestionViewModel, Question?> ShowDialogNew { get; }
+     
+     public ICommand EditVideoCommand { get; }
+     public Interaction<Unit, string?> ShowEditVideoDialog { get; }
+     
+     public ReactiveCommand<Question, Unit> VideoDeleted { get; }
+ 
+     public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
+     public IScreen HostScreen { get; }
+ }

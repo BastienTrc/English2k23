@@ -14,7 +14,7 @@ namespace English2k23.ViewModels;
 
 public class PracticeViewModel : ReactiveObject, IRoutableViewModel
 {
-    private const int TimeLimit = 1000; // Set timer delay, actual time will be: TimeLimit/RefreshTime
+    private const int TimeLimit = 10000; // Set timer delay
     private const int RefreshTime = 10; // Delay between 2 refresh of the timer bar
 
     // Just a nod to HP
@@ -96,8 +96,6 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
 
             DisplayVideo = ReactiveCommand.CreateFromTask(async () =>
             {
-
-
                 var videoPlayerModel = new VideoPlayerModel(_currQuestion?.PathToVideo);
 
                 AnswerStyleChosen = true;
@@ -107,7 +105,6 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
                 await ShowVideoDialog.Handle(videoPlayerModel);
 
                 _timer?.Start();
-
             });
         }
 
@@ -172,6 +169,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
             }
 
             _hasAnswered = true;
+            UserAnswer = "";
         });
 
         GoToResults = ReactiveCommand.CreateFromObservable(() =>
@@ -296,7 +294,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
         _timer = new Timer(RefreshTime);
         _timer.Elapsed += (_, _) =>
         {
-            if (TimerValue == TimeLimit)
+            if (TimerValue == 1000) // Max value of the progressBar
             {
                 InfoMsg = $"Too late, no points can be earned! The answer was {_currQuestion?.Expression}";
                 _tooLate = true;
@@ -304,7 +302,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
                 return;
             }
 
-            TimerValue += TimeLimit / (RefreshTime * 100);
+            TimerValue += 1000*RefreshTime/TimeLimit;
         };
 
         _timer.AutoReset = true;

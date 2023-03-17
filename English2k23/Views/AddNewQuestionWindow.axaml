@@ -21,7 +21,11 @@
 
         <TextBox Margin="15" Text="{Binding QuestionExpression}" Watermark="Enter the expression" MinWidth="300" />
         <TextBox Margin="15" Text="{Binding QuestionDefinition}" Watermark="Enter the definition" MinWidth="300" />
-        <TextBox Margin="15" Text="{Binding QuestionAnswers}" Watermark="Enter answers separated by a semicolon"
+        <TextBox Margin="15" Text="{Binding FirstChoice}" Watermark="Enter first false choice"
+                 MinWidth="300" />
+        <TextBox Margin="15" Text="{Binding SecondChoice}" Watermark="Enter second false choice"
+                 MinWidth="300" />
+        <TextBox Margin="15" Text="{Binding ThirdChoice}" Watermark="Enter third false choice"
                  MinWidth="300" />
         <TextBlock Margin="15" Text="{Binding VideoUrl}" Classes="TextBoxBlock" MinWidth="300" />
         <Button Content="Select a video" Command="{Binding OpenFileDialogCommand}"

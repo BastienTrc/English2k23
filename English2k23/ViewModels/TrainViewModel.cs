@@ -109,7 +109,7 @@ public class TrainViewModel : ReactiveObject, IRoutableViewModel
     {
         try
         {
-            ImageToLoad = new Bitmap(pictureUrl);
+            ImageToLoad = new Bitmap(AppDomain.CurrentDomain.BaseDirectory + "Pictures\\" + pictureUrl);
         }
         catch (Exception)
         {

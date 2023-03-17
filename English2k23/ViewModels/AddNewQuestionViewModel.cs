@@ -10,7 +10,9 @@ namespace English2k23.ViewModels;
 public class AddNewQuestionViewModel : ViewModelBase
 {
     private bool _isEnabled;
-    private string? _questionAnswers;
+    private string? _firstChoice;
+    private string? _secondChoice;
+    private string? _thirdChoice;
     private string? _questionDefinition;
     private string? _questionExpression;
     private string? _videoUrl;
@@ -30,11 +32,11 @@ public class AddNewQuestionViewModel : ViewModelBase
 
         Validate = ReactiveCommand.Create(() =>
         {
-            if (_questionExpression is null || _questionDefinition is null || _questionAnswers is null) return null;
+            if (QuestionExpression is null || QuestionDefinition is null || FirstChoice is null || SecondChoice is null || ThirdChoice is null) return null;
 
             if (string.IsNullOrWhiteSpace(VideoUrl))
-                return new Question(_questionExpression, _questionDefinition, _questionAnswers, "", false);
-            return new Question(_questionExpression, _questionDefinition, _questionAnswers, VideoUrl, true);
+                return new Question(QuestionExpression, QuestionDefinition,$"{FirstChoice};{SecondChoice};{ThirdChoice}", "", false);
+            return new Question(QuestionExpression, QuestionDefinition,$"{FirstChoice};{SecondChoice};{ThirdChoice}", VideoUrl, true);
         });
     }
 
@@ -52,9 +54,11 @@ public class AddNewQuestionViewModel : ViewModelBase
         get => _questionExpression;
         set
         {
-            IsEnabled = !(string.IsNullOrWhiteSpace(_questionExpression) ||
-                          string.IsNullOrWhiteSpace(_questionDefinition) ||
-                          string.IsNullOrWhiteSpace(_questionAnswers));
+            IsEnabled = !(string.IsNullOrWhiteSpace(value) ||
+                          string.IsNullOrWhiteSpace(QuestionDefinition) ||
+                          string.IsNullOrWhiteSpace(FirstChoice) ||
+                          string.IsNullOrWhiteSpace(SecondChoice) ||
+                          string.IsNullOrWhiteSpace(ThirdChoice));
             if (string.IsNullOrWhiteSpace(value))
             {
                 IsEnabled = false;
@@ -70,9 +74,11 @@ public class AddNewQuestionViewModel : ViewModelBase
         get => _questionDefinition;
         set
         {
-            IsEnabled = !(string.IsNullOrWhiteSpace(_questionExpression) ||
-                          string.IsNullOrWhiteSpace(_questionDefinition) ||
-                          string.IsNullOrWhiteSpace(_questionAnswers));
+            IsEnabled = !(string.IsNullOrWhiteSpace(QuestionExpression) ||
+                          string.IsNullOrWhiteSpace(value) ||
+                          string.IsNullOrWhiteSpace(FirstChoice) ||
+                          string.IsNullOrWhiteSpace(SecondChoice) ||
+                          string.IsNullOrWhiteSpace(ThirdChoice));
             if (string.IsNullOrWhiteSpace(value))
             {
                 IsEnabled = false;
@@ -83,21 +89,63 @@ public class AddNewQuestionViewModel : ViewModelBase
         }
     }
 
-    public string? QuestionAnswers
+    public string? FirstChoice
     {
-        get => _questionAnswers;
+        get => _firstChoice;
         set
         {
-            IsEnabled = !(string.IsNullOrWhiteSpace(_questionExpression) ||
-                          string.IsNullOrWhiteSpace(_questionDefinition) ||
-                          string.IsNullOrWhiteSpace(_questionAnswers));
+            IsEnabled = !(string.IsNullOrWhiteSpace(QuestionExpression) ||
+                          string.IsNullOrWhiteSpace(QuestionDefinition) ||
+                          string.IsNullOrWhiteSpace(value) ||
+                          string.IsNullOrWhiteSpace(SecondChoice) ||
+                          string.IsNullOrWhiteSpace(ThirdChoice));
             if (string.IsNullOrWhiteSpace(value))
             {
                 IsEnabled = false;
                 throw new DataValidationException("Answers field can't be empty");
             }
 
-            this.RaiseAndSetIfChanged(ref _questionAnswers, value);
+            this.RaiseAndSetIfChanged(ref _firstChoice, value);
+        }
+    }
+    
+    public string? SecondChoice
+    {
+        get => _secondChoice;
+        set
+        {
+            IsEnabled = !(string.IsNullOrWhiteSpace(QuestionExpression) ||
+                          string.IsNullOrWhiteSpace(QuestionDefinition) ||
+                          string.IsNullOrWhiteSpace(FirstChoice) ||
+                          string.IsNullOrWhiteSpace(value) ||
+                          string.IsNullOrWhiteSpace(ThirdChoice));
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                IsEnabled = false;
+                throw new DataValidationException("Answers field can't be empty");
+            }
+
+            this.RaiseAndSetIfChanged(ref _secondChoice, value);
+        }
+    }
+    
+    public string? ThirdChoice
+    {
+        get => _thirdChoice;
+        set
+        {
+            IsEnabled = !(string.IsNullOrWhiteSpace(QuestionExpression) ||
+                          string.IsNullOrWhiteSpace(QuestionDefinition) ||
+                          string.IsNullOrWhiteSpace(FirstChoice) ||
+                          string.IsNullOrWhiteSpace(SecondChoice) ||
+                          string.IsNullOrWhiteSpace(value));
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                IsEnabled = false;
+                throw new DataValidationException("Answers field can't be empty");
+            }
+
+            this.RaiseAndSetIfChanged(ref _thirdChoice, value);
         }
     }
 

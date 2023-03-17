@@ -13,8 +13,7 @@
     </Design.DataContext>
 
     <Panel
-        Margin="10"		
-        Background="Blue"
+        Margin="10"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         Name="PanelView">
@@ -28,9 +27,8 @@
             <!-- Content -->
             <Panel
                 VerticalAlignment="Bottom"
-                Opacity="0.8"
-                Background="Gray">
-                <views:PlayerControls/>
+                Opacity="0.6">
+                <!-- <views:PlayerControls/> -->
             </Panel>
 			
         </unofficial:VideoView>		

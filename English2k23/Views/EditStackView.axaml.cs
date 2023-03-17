@@ -19,10 +19,8 @@ public partial class EditStackView : ReactiveUserControl<EditStackViewModel>
             this.WhenActivated(disposables =>
             {
                 disposables(ViewModel!.ShowDialogExist.RegisterHandler(mainWindow.DoShowDialogAsyncExistingQuest));
-            });
-            this.WhenActivated(disposables =>
-            {
                 disposables(ViewModel!.ShowDialogNew.RegisterHandler(mainWindow.DoShowDialogAsyncNewQuest));
+                disposables(ViewModel!.ShowEditVideoDialog.RegisterHandler(mainWindow.DoShowDialogAsyncEditVideo));
             });
         }
 

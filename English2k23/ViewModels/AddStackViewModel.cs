@@ -48,7 +48,7 @@ public class AddStackViewModel : ViewModelBase
         get => _stackName;
         set
         {
-            IsEnabled = !(string.IsNullOrWhiteSpace(_stackName) || string.IsNullOrWhiteSpace(_stackDescription));
+            IsEnabled = !(string.IsNullOrWhiteSpace(StackName) || string.IsNullOrWhiteSpace(StackDescription));
             if (string.IsNullOrWhiteSpace(value))
             {
                 IsEnabled = false;
@@ -64,7 +64,7 @@ public class AddStackViewModel : ViewModelBase
         get => _stackDescription;
         set
         {
-            IsEnabled = !(string.IsNullOrWhiteSpace(_stackName) || string.IsNullOrWhiteSpace(_stackDescription));
+            IsEnabled = !(string.IsNullOrWhiteSpace(StackName) || string.IsNullOrWhiteSpace(StackDescription));
             if (string.IsNullOrWhiteSpace(value))
             {
                 IsEnabled = false;

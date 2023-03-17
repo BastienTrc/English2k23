@@ -35,7 +35,14 @@ public class VideoPlayerModel : ViewModelBase
             _libVLC.Log += VlcLogger_Event;
 
             MediaPlayer = new MediaPlayer(_libVLC);
+            MediaPlayer.EndReached += MediaPlayer_EndReached;
+            Play();
         }
+    }
+
+    private void MediaPlayer_EndReached(object sender, EventArgs e)
+    {
+        ThreadPool.QueueUserWorkItem(_ => MediaPlayer?.Stop());
     }
 
     public string ErrorMsg

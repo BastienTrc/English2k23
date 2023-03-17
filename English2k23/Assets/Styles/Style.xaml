@@ -77,5 +77,9 @@
         <Setter Property="FontSize" Value="30" />
     </Style>
 
+    <Style Selector="ListBox.McqContainer">
+        <Setter Property="Background" Value="{StaticResource MainGreen}" />
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
 
 </Styles>

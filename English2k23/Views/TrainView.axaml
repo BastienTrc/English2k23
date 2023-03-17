@@ -31,20 +31,20 @@
                      Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
                      Classes="StackList"
                      SelectedItem="{Binding StackSelected}"
-                     MaxHeight="700" MaxWidth="350"
+                     MaxHeight="700" MaxWidth="500"
                      HorizontalAlignment="Center"
                      Margin="10">
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" ItemWidth="100" Margin="10" />
+                        <WrapPanel Margin="10" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border Background="White" CornerRadius="4" Padding="4">
-                            <TextBlock Text="{Binding Name}"
+                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap"
                                        Classes="ItemBg" HorizontalAlignment="Center" />
                         </Border>
                     </DataTemplate>

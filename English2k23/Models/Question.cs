@@ -20,7 +20,7 @@ public class Question : ReactiveObject
         VideoMode = videoMode;
     }
 
-    private bool VideoMode { get; }
+    public bool VideoMode { get; set; }
 
 
     public string? Expression
@@ -60,11 +60,13 @@ public class Question : ReactiveObject
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                _pathToVideo = "Default value";
+                this.RaiseAndSetIfChanged(ref _pathToVideo, "No video was given");
                 return;
             }
 
-            _pathToVideo = value;
+            this.RaiseAndSetIfChanged(ref _pathToVideo, value);
         }
     }
+    
+    
 }

@@ -14,6 +14,7 @@
     <Panel HorizontalAlignment="Center" VerticalAlignment="Center">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
             <TextBlock Text="Progression" HorizontalAlignment="Center" />
+            
             <ProgressBar
                 VerticalAlignment="Top"
                 Value="{Binding ProgressBarValue}"
@@ -21,6 +22,7 @@
                 Margin="5"
                 Classes="ProgressQuestionBar" />
             <TextBlock HorizontalAlignment="Center" Text="{Binding CurrQuestion.Definition}" />
+            
             <TextBlock
                 HorizontalAlignment="Center"
                 Text="{Binding Score, StringFormat=Score : {0}}"
@@ -29,17 +31,20 @@
                 HorizontalAlignment="Center"
                 Text="{Binding InfoMsg}"
                 Margin="10" IsVisible="{Binding InfoMsg}" />
+            
             <ProgressBar Maximum="1000" Value="{Binding TimerValue}" />
-            <TextBox HorizontalAlignment="Center" Text="{Binding UserAnswer}" IsVisible="{Binding ShowUserAnswer}" />
-            <ListBox HorizontalAlignment="Center" Items="{Binding AnswersList}"
+            
+            <TextBox HorizontalAlignment="Center" Text="{Binding UserAnswer}" 
+                     IsVisible="{Binding ShowUserAnswer}" MinWidth="300"/>
+            
+            <ListBox HorizontalAlignment="Center" Items="{Binding AnswersList}" Classes="McqContainer"
                      SelectedItem="{Binding McqChosed}" IsVisible="{Binding ShowMcq}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" ItemWidth="100" Margin="10" MaxWidth="240" />
+                        <WrapPanel Orientation="Horizontal" ItemWidth="100" Margin="10" MaxWidth="240"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
-            <TextBlock HorizontalAlignment="Center" Text="waiting for implementation" IsVisible="{Binding ShowVideo}" />
 
             <StackPanel Orientation="Horizontal" Spacing="20">
                 <Button HorizontalAlignment="Center" Command="{Binding DisplayNone}"

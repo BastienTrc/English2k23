@@ -8,6 +8,7 @@ public partial class PlayerControls : UserControl
 {
     public Panel _playerControl;
     private static PlayerControls _this;
+
     public PlayerControls()
     {
         InitializeComponent();
@@ -19,6 +20,7 @@ public partial class PlayerControls : UserControl
     {
         return _this;
     }
+
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
@@ -27,12 +29,12 @@ public partial class PlayerControls : UserControl
     private void StartPlay(object? sender, RoutedEventArgs e)
     {
         var tmp = VideoPlayerWindow.GetInstance();
-        tmp.viewModel.Play();
+        tmp.viewModel?.Play();
     }
 
     private void StopPlay(object? sender, RoutedEventArgs e)
     {
         var tmp = VideoPlayerWindow.GetInstance();
-        tmp.viewModel.Stop();
+        tmp.viewModel?.Stop();
     }
 }

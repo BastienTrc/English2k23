@@ -28,27 +28,27 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
             stack => HostScreen.Router.Navigate.Execute(new EditStackViewModel(HostScreen, game, stack)));
 
         QuestionStackList = game.QuestionStacks;
-        for (var i = 0; i < 25; i++) QuestionStackList.Add(new QuestionStack("a" + i, "b" + 2 * i, "c" + 3 * i));
+        for (var i = 0; i < 5; i++) QuestionStackList.Add(new QuestionStack("a" + i, "b" + 2 * i, "c" + 3 * i));
 
         StackDeleted = ReactiveCommand.Create<QuestionStack>(
             stack => QuestionStackList.Remove(stack)
         );
 
         // Handle add stack command
-        ShowDialog = new Interaction<AddStackViewModel, QuestionStack?>();
+        ShowAddStackDialog = new Interaction<AddStackViewModel, QuestionStack?>();
         AddStackCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var addStackViewModel = new AddStackViewModel();
 
-            var result = await ShowDialog.Handle(addStackViewModel);
+            var result = await ShowAddStackDialog.Handle(addStackViewModel);
             if (result != null) QuestionStackList.Add(result);
         });
 
-        ShowFileDialog = new Interaction<Unit, string?>();
-        OpenFileDialogCommand = ReactiveCommand.CreateFromTask(async () =>
+        ShowEditPictureDialog = new Interaction<Unit, string?>();
+        EditPictureCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             // No need to create and give a viewModel as OpenFileDialog don't need one
-            var result = await ShowFileDialog.Handle(new Unit());
+            var result = await ShowEditPictureDialog.Handle(new Unit());
 
             // If PictureURL wasn't specified then it contains "null"
             if (StackSelected != null) StackSelected.PictureUrl = result;
@@ -93,14 +93,14 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
     public ReactiveCommand<QuestionStack, Unit> StackDeleted { get; }
 
     // Show open file dialog
-    public ICommand OpenFileDialogCommand { get; }
-    public Interaction<Unit, string?> ShowFileDialog { get; }
+    public ICommand EditPictureCommand { get; }
+    public Interaction<Unit, string?> ShowEditPictureDialog { get; }
 
     public AvaloniaList<QuestionStack> QuestionStackList { get; }
 
     // Handle add stack command
     public ICommand AddStackCommand { get; }
-    public Interaction<AddStackViewModel, QuestionStack?> ShowDialog { get; }
+    public Interaction<AddStackViewModel, QuestionStack?> ShowAddStackDialog { get; }
 
     public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
     public IScreen HostScreen { get; }
@@ -110,7 +110,8 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
     {
         try
         {
-            ImageToLoad = new Bitmap(AppDomain.CurrentDomain.BaseDirectory + "Pictures\\" + pictureUrl);
+            ImageToLoad = new Bitmap(
+                $"{AppDomain.CurrentDomain.BaseDirectory}Pictures{Path.DirectorySeparatorChar}{pictureUrl}");
         }
         catch (Exception)
         {

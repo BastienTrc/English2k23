@@ -29,14 +29,14 @@
             <ListBox Name="QuestionList" Items="{Binding QuestionList}"
                      SelectedItem="{Binding SelectedQuestion}"
                      Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
-                     MaxHeight="700" MaxWidth="350"
+                     MaxHeight="700" MaxWidth="500"
                      HorizontalAlignment="Center"
                      Margin="10"
                      Classes="StackList">
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" ItemWidth="100" Margin="10" />
+                        <WrapPanel Margin="10" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
@@ -44,7 +44,7 @@
                     <DataTemplate>
                         <Border Classes="ListBoxBorder">
                             <StackPanel Spacing="5">
-                                <TextBlock Text="{Binding Expression}" Classes="ItemBg" />
+                                <TextBlock Text="{Binding Expression}" Classes="ItemBg" TextWrapping="Wrap"/>
                             </StackPanel>
                         </Border>
                     </DataTemplate>
@@ -78,11 +78,18 @@
         <GridSplitter Grid.Column="1" Background="White" ResizeDirection="Columns" />
 
         <Grid Grid.Column="2"
-              RowDefinitions="*,8*"
+              RowDefinitions="Auto,Auto,Auto,*"
               HorizontalAlignment="Center">
             <TextBlock Grid.Row="0" Text="Question preview" Margin="20" FontSize="24" />
+            
+            <Button Grid.Row="1" Command="{Binding EditVideoCommand}" Content="Change video"
+                    Classes="BorderButton" HorizontalAlignment="Center" Margin="20"/>
+            
+            <Button Grid.Row="2" Command="{Binding VideoDeleted}" Content="Delete video"
+                    Classes="BorderButton" HorizontalAlignment="Center" Margin="10" CommandParameter="{Binding SelectedQuestion}"/>
+            
 
-            <Border Grid.Row="1" CornerRadius="4" Padding="4">
+            <Border Grid.Row="3" CornerRadius="4" Padding="4">
                 <StackPanel Spacing="5">
                     <TextBox Text="{Binding SelectedQuestion.Expression}" />
                     <TextBox Text="{Binding SelectedQuestion.Definition}" />
