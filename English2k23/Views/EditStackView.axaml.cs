@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
@@ -26,9 +25,10 @@ public partial class EditStackView : ReactiveUserControl<EditStackViewModel>
                 disposables(ViewModel!.ShowDialogNew.RegisterHandler(mainWindow.DoShowDialogAsyncNewQuest));
             });
         }
+
         AvaloniaXamlLoader.Load(this);
     }
-    
+
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);

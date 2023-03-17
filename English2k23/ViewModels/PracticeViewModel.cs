@@ -1,6 +1,12 @@
+using System.Diagnostics;
 using System.Reactive;
+using System.Reactive.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Input;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using English2k23.Models;
+using LibVLCSharp.Shared;
 using ReactiveUI;
 using Timer = System.Timers.Timer;
 
@@ -8,131 +14,52 @@ namespace English2k23.ViewModels;
 
 public class PracticeViewModel : ReactiveObject, IRoutableViewModel
 {
-    public string? UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
-    public IScreen HostScreen { get; }
+    private const int TimeLimit = 1000; // Set timer delay, actual time will be: TimeLimit/RefreshTime
+    private const int RefreshTime = 10; // Delay between 2 refresh of the timer bar
+
+    // Just a nod to HP
+    private static readonly Random Rnd = new();
+    private readonly List<string> _houses = new() { "Gryffindor", "Slytherin", "HufflePuff", "Ravenclaw" };
 
     private readonly QuestionStack _stack;
-    private int _i = 1;
-
-    public string? McqChosed { get; set; }
-    public string? UserAnswer { get; set; }
-
-    public ReactiveCommand<Unit, Unit> DisplayMcq { get; }
-    public ReactiveCommand<Unit, Unit> DisplayVideo { get; }
-    public ReactiveCommand<Unit, Unit> Validate { get; }
-    public ReactiveCommand<Unit, Unit> DisplayNone { get; }
-
-
-    private Question? _currQuestion;
-
-    public Question? CurrQuestion
-    {
-        get => _currQuestion;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _currQuestion, value);
-            AnswersList = new AvaloniaList<string>(_currQuestion?.McqAnswers?.Split(";") ?? new[] { "Error" })
-            {
-                _currQuestion?.Expression ?? "Error"
-            };
-            Shuffle(AnswersList);
-        }
-    }
 
     private AvaloniaList<string>? _answersList;
 
-    public AvaloniaList<string>? AnswersList
-    {
-        get => _answersList;
-        set => this.RaiseAndSetIfChanged(ref _answersList, value);
-    }
+    private bool _answerStyleChosen;
 
-    private bool _showUserAnswer;
 
-    public bool ShowUserAnswer
-    {
-        get => _showUserAnswer;
-        set => this.RaiseAndSetIfChanged(ref _showUserAnswer, value);
-    }
+    private Question? _currQuestion;
+    private bool _hasAnswered;
+    private int _i = 1;
+
+    private string _infoMsg = "Find the expression!";
+
+    private readonly LibVLC? _libVLC;
+
+    private double _progressBarValue;
+
+    private int _score;
+    private readonly List<int> _scoreDetails = new(); // Details of each point of each question
 
 
     private bool _showMcq;
 
-    public bool ShowMcq
-    {
-        get => _showMcq;
-        set => this.RaiseAndSetIfChanged(ref _showMcq, value);
-    }
+    private bool _showUserAnswer;
 
     private bool _showVideo;
 
-    public bool ShowVideo
-    {
-        get => _showVideo;
-        set => this.RaiseAndSetIfChanged(ref _showVideo, value);
-    }
-
-    private bool _answerStyleChosen;
-
-    public bool AnswerStyleChosen
-    {
-        get => _answerStyleChosen;
-        set => this.RaiseAndSetIfChanged(ref _answerStyleChosen, value);
-    }
-
-    private int NbOfQuestion { get; }
-
-    private double _progressBarValue;
-
-    public double ProgressBarValue
-    {
-        get => _progressBarValue;
-        set => this.RaiseAndSetIfChanged(ref _progressBarValue, value);
-    }
-
-    private int _score;
-
-    public int Score
-    {
-        get => _score;
-        set => this.RaiseAndSetIfChanged(ref _score, value);
-    }
-
-    private string _infoMsg = "Find the expression!";
-    private bool _hasAnswered;
-
-    public string InfoMsg
-    {
-        get => _infoMsg;
-        set => this.RaiseAndSetIfChanged(ref _infoMsg, value);
-    }
+    private Timer? _timer;
 
     private int _timerValue;
-
-    public int TimerValue
-    {
-        get => _timerValue;
-        set => this.RaiseAndSetIfChanged(ref _timerValue, value);
-    }
-
-    // Just a nod to HP
-    static readonly Random Rnd = new Random();
-    private readonly List<string> _houses = new List<string> { "Gryffindor", "Slytherin", "HufflePuff", "Ravenclaw" };
-
-    private Timer? _timer;
-    private const int TimeLimit = 1000; // Set timer delay, actual time will be: TimeLimit/RefreshTime
-    private const int RefreshTime = 10; // Delay between 2 refresh of the timer bar
     private bool _tooLate; // If user took too much time to answer
-    private List<int> _scoreDetails = new List<int>(); // Details of each point of each question
-
-    private ReactiveCommand<Unit, IRoutableViewModel> GoToResults { get; } // End of the game
+    public MediaPlayer? MediaPlayer;
 
     public PracticeViewModel(IScreen hostScreen, QuestionStack stack)
     {
         HostScreen = hostScreen;
 
         _stack = stack;
-        AvaloniaList<Question?> questionList = _stack.getQuestions();
+        var questionList = _stack.getQuestions();
         CurrQuestion = questionList[0];
         NbOfQuestion = questionList.Count;
 
@@ -146,12 +73,56 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
             AnswerStyleChosen = true;
             ShowMcq = true;
         });
-        DisplayVideo = ReactiveCommand.Create(() => // Video help
+
+        if (!Design.IsDesignMode)
         {
-            AnswerStyleChosen = true;
-            ShowVideo = true;
-            ShowUserAnswer = true;
-        });
+            {
+                Core.Initialize();
+            }
+
+            _libVLC = new LibVLC(
+                true
+            );
+            _libVLC.Log += VlcLogger_Event;
+
+            MediaPlayer = new MediaPlayer(_libVLC);
+            MediaPlayer.EndReached += MediaPlayer_EndReached;
+            MediaPlayer.Fullscreen = true;
+        }
+
+        ShowVideoDialog = new Interaction<VideoPlayerModel, Unit>();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+
+            DisplayVideo = ReactiveCommand.CreateFromTask(async () =>
+            {
+
+
+                var videoPlayerModel = new VideoPlayerModel(_currQuestion?.PathToVideo);
+
+                AnswerStyleChosen = true;
+                ShowUserAnswer = true;
+
+                _timer?.Stop();
+                await ShowVideoDialog.Handle(videoPlayerModel);
+
+                _timer?.Start();
+
+            });
+        }
+
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            DisplayVideo = ReactiveCommand.CreateFromTask(async () =>
+            {
+                _timer?.Stop();
+                AnswerStyleChosen = true;
+                ShowUserAnswer = true;
+
+                Play();
+            });
+        }
+
 
         Validate = ReactiveCommand.Create(() => // User confirm answer
         {
@@ -209,6 +180,91 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
         QuestionCountdown();
     }
 
+    public string? McqChosed { get; set; }
+    public string? UserAnswer { get; set; }
+
+    public ReactiveCommand<Unit, Unit> DisplayMcq { get; }
+    public ReactiveCommand<Unit, Unit> Validate { get; }
+    public ReactiveCommand<Unit, Unit> DisplayNone { get; }
+
+    public Question? CurrQuestion
+    {
+        get => _currQuestion;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _currQuestion, value);
+            AnswersList = new AvaloniaList<string>(_currQuestion?.McqAnswers?.Split(";") ?? new[] { "Error" })
+            {
+                _currQuestion?.Expression ?? "Error"
+            };
+            Shuffle(AnswersList);
+        }
+    }
+
+    public AvaloniaList<string>? AnswersList
+    {
+        get => _answersList;
+        set => this.RaiseAndSetIfChanged(ref _answersList, value);
+    }
+
+    public bool ShowUserAnswer
+    {
+        get => _showUserAnswer;
+        set => this.RaiseAndSetIfChanged(ref _showUserAnswer, value);
+    }
+
+    public bool ShowMcq
+    {
+        get => _showMcq;
+        set => this.RaiseAndSetIfChanged(ref _showMcq, value);
+    }
+
+    public bool ShowVideo
+    {
+        get => _showVideo;
+        set => this.RaiseAndSetIfChanged(ref _showVideo, value);
+    }
+
+    public bool AnswerStyleChosen
+    {
+        get => _answerStyleChosen;
+        set => this.RaiseAndSetIfChanged(ref _answerStyleChosen, value);
+    }
+
+    private int NbOfQuestion { get; }
+
+    public double ProgressBarValue
+    {
+        get => _progressBarValue;
+        set => this.RaiseAndSetIfChanged(ref _progressBarValue, value);
+    }
+
+    public int Score
+    {
+        get => _score;
+        set => this.RaiseAndSetIfChanged(ref _score, value);
+    }
+
+    public string InfoMsg
+    {
+        get => _infoMsg;
+        set => this.RaiseAndSetIfChanged(ref _infoMsg, value);
+    }
+
+    public int TimerValue
+    {
+        get => _timerValue;
+        set => this.RaiseAndSetIfChanged(ref _timerValue, value);
+    }
+
+    private ReactiveCommand<Unit, IRoutableViewModel> GoToResults { get; } // End of the game
+
+    // Handle add stack command
+    public ICommand DisplayVideo { get; }
+    public Interaction<VideoPlayerModel, Unit> ShowVideoDialog { get; }
+    public string? UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
+    public IScreen HostScreen { get; }
+
     private void NextQuestion()
     {
         _hasAnswered = false;
@@ -225,7 +281,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
         }
 
         CurrQuestion = _stack.getQuestions()[_i++];
-        ProgressBarValue += (100.0 / NbOfQuestion);
+        ProgressBarValue += 100.0 / NbOfQuestion;
 
         ShowMcq = false;
         ShowUserAnswer = false;
@@ -270,12 +326,39 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
         }
     }
 
-    private void Reset()
+    private void VlcLogger_Event(object? sender, LogEventArgs l)
     {
-        _i = 0;
-        ProgressBarValue = 0;
-        Score = 0;
-        _scoreDetails = new List<int>();
+        Debug.WriteLine(l.Message);
+    }
 
+    public void Play()
+    {
+        if (_libVLC != null && MediaPlayer != null)
+        {
+            //string[] Media_AdditionalOptions = {
+            //    $":avcodec-hw=any"
+            //};
+            string[] Media_AdditionalOptions = { };
+
+            using var media = new Media(
+                _libVLC,
+                new Uri(
+                    $"{AppDomain.CurrentDomain.BaseDirectory}Videos{Path.DirectorySeparatorChar}{CurrQuestion?.PathToVideo}"),
+                Media_AdditionalOptions
+            );
+            MediaPlayer.Play(media);
+            media.Dispose();
+        }
+    }
+
+    public void Stop()
+    {
+        if (MediaPlayer != null) MediaPlayer.Stop();
+    }
+
+    private void MediaPlayer_EndReached(object sender, EventArgs e)
+    {
+        ThreadPool.QueueUserWorkItem(_ => MediaPlayer?.Stop());
+        _timer.Start();
     }
 }

@@ -51,7 +51,7 @@
                 </ListBox.ItemTemplate>
 
             </ListBox>
-            
+
         </Grid>
 
         <GridSplitter Grid.Column="1" Background="white" ResizeDirection="Columns" />
@@ -84,17 +84,17 @@
             <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Center"
                        Text="{Binding WarningMessage}"
                        IsVisible="{Binding ShowWarning}"
-                       Classes="Warning"/>
+                       Classes="Warning" />
 
             <Grid Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" RowDefinitions="*,*,2*,6*" Margin="15,10">
                 <TextBlock Grid.Row="0" Margin="5,10"
-                         Text="{Binding #StackList.SelectedItem.Name}" Classes="TextBoxBlock"/>
+                           Text="{Binding #StackList.SelectedItem.Name}" Classes="TextBoxBlock" />
                 <TextBlock Grid.Row="1" Margin="5"
-                         Text="{Binding #StackList.SelectedItem.Description}" Classes="TextBoxBlock"/>
+                           Text="{Binding #StackList.SelectedItem.Description}" Classes="TextBoxBlock" />
                 <Border Grid.Row="2" Margin="5,5,5,20">
-                    <TextBlock Grid.Row="2"
-                               Text="{Binding #StackList.SelectedItem.PictureUrl}" Classes="TextBoxBlock"
-                               TextWrapping="Wrap" />
+                    <TextBlock
+                        Text="{Binding #StackList.SelectedItem.PictureUrl}" Classes="TextBoxBlock"
+                        TextWrapping="Wrap" />
                 </Border>
                 <Panel Grid.Row="3" Margin="5">
                     <Image Source="{Binding ImageToLoad}" MaxWidth="400" MaxHeight="500" />

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Reactive;
 using Avalonia.Collections;
 using ReactiveUI;
@@ -8,22 +6,7 @@ namespace English2k23.Models;
 
 public class Game
 {
-    public AvaloniaList<QuestionStack> QuestionStacks { get; } = new();
-    public AvaloniaList<Question?> availableQuestions { get; } = new();
-
-    private string Name { get; set; }
-    private string Description { get; set; }
-    private CardFrequencyEnum CardFrequency { get; set; }
-    private Guid _id;
-
-    enum CardFrequencyEnum
-    {
-        Low,
-        Middle,
-        High
-    }
-
-    public string Id => _id.ToString();
+    private readonly Guid _id;
 
     public Game(Guid id, string name, string description)
     {
@@ -33,6 +16,15 @@ public class Game
         CardFrequency = CardFrequencyEnum.Middle;
     }
 
+    public AvaloniaList<QuestionStack> QuestionStacks { get; } = new();
+    public AvaloniaList<Question?> availableQuestions { get; } = new();
+
+    private string Name { get; }
+    private string Description { get; }
+    private CardFrequencyEnum CardFrequency { get; }
+
+    public string Id => _id.ToString();
+
     public void AddQuestionToGame(Question? question)
     {
         availableQuestions.Add(question);
@@ -41,10 +33,7 @@ public class Game
     public void RemoveQuestionFromGame(Question? question)
     {
         // Need to remove question from every stack it may be present
-        foreach (var stack in QuestionStacks)
-        {
-            RemoveQuestionFromStack(stack, question);
-        }
+        foreach (var stack in QuestionStacks) RemoveQuestionFromStack(stack, question);
 
         availableQuestions.Remove(question);
     }
@@ -69,5 +58,12 @@ public class Game
     {
         QuestionStacks.Remove(questionStack);
         return null;
+    }
+
+    private enum CardFrequencyEnum
+    {
+        Low,
+        Middle,
+        High
     }
 }

@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
@@ -16,14 +15,11 @@ public partial class ManageStackView : ReactiveUserControl<ManageStackViewModel>
             {
                 MainWindow: MainWindow mainWindow
             })
-        {
             this.WhenActivated(disposable =>
             {
                 disposable(ViewModel!.ShowDialog.RegisterHandler(mainWindow.DoShowDialogAsync));
                 disposable(ViewModel!.ShowFileDialog.RegisterHandler(mainWindow.DoShowFileDialogAsync));
             });
-
-        }
 
         AvaloniaXamlLoader.Load(this);
     }

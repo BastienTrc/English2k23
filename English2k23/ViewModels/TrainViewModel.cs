@@ -1,12 +1,9 @@
 using Avalonia;
 using Avalonia.Collections;
-
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using English2k23.Models;
 using ReactiveUI;
-
-
 
 namespace English2k23.ViewModels;
 
@@ -14,74 +11,15 @@ public class TrainViewModel : ReactiveObject, IRoutableViewModel
 {
     private readonly Bitmap? _default;
 
-    private string? _warningMessage;
-
-    public string? WarningMessage
-    {
-        get => _warningMessage;
-        set => this.RaiseAndSetIfChanged(ref _warningMessage, value);
-    }
-
-    private bool _showWarning;
-    public bool ShowWarning
-    {
-        get => _showWarning;
-        set => this.RaiseAndSetIfChanged(ref _showWarning, value);
-    }
+    private Bitmap? _imageToLoad;
 
     private bool _isEnabled;
 
-    public bool IsEnabled
-    {
-        get => _isEnabled;
-        set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
-    }
-
-    private Bitmap? _imageToLoad;
-
-    public Bitmap? ImageToLoad
-    {
-        get => _imageToLoad;
-        set => this.RaiseAndSetIfChanged(ref _imageToLoad, value);
-    }
+    private bool _showWarning;
 
     private QuestionStack? _stackSelected;
 
-    public QuestionStack? StackSelected
-    {
-        get => _stackSelected;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _stackSelected, value);
-            IsEnabled = _stackSelected is not null;
-            if (_stackSelected?.getQuestions().Count == 0)
-            {
-                IsEnabled = false;
-                ShowWarning = true;
-                WarningMessage = "Selected set has no question in it";
-            } else if (_stackSelected?.getQuestions().Count < 5)
-            {
-                ShowWarning = true;
-                WarningMessage = "Selected set has less than 5 questions in it";
-            }
-            else
-            {
-                ShowWarning = false;
-
-            }
-
-            LoadImage(value?.PictureUrl);
-        }
-    }
-
-    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
-    public IScreen HostScreen { get; }
-
-    // Show open file dialog
-
-    public AvaloniaList<QuestionStack> QuestionStackList { get; }
-    public ReactiveCommand<QuestionStack, IRoutableViewModel> GoPractice { get; }
-    public ReactiveCommand<QuestionStack, IRoutableViewModel> GoCompetitive { get; }
+    private string? _warningMessage;
 
     public TrainViewModel(IScreen hostScreen, Game game)
     {
@@ -105,6 +43,66 @@ public class TrainViewModel : ReactiveObject, IRoutableViewModel
             _default = new Bitmap(@"../../../Assets/icons/default.png");
         }
     }
+
+    public string? WarningMessage
+    {
+        get => _warningMessage;
+        set => this.RaiseAndSetIfChanged(ref _warningMessage, value);
+    }
+
+    public bool ShowWarning
+    {
+        get => _showWarning;
+        set => this.RaiseAndSetIfChanged(ref _showWarning, value);
+    }
+
+    public bool IsEnabled
+    {
+        get => _isEnabled;
+        set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
+    }
+
+    public Bitmap? ImageToLoad
+    {
+        get => _imageToLoad;
+        set => this.RaiseAndSetIfChanged(ref _imageToLoad, value);
+    }
+
+    public QuestionStack? StackSelected
+    {
+        get => _stackSelected;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _stackSelected, value);
+            IsEnabled = _stackSelected is not null;
+            if (_stackSelected?.getQuestions().Count == 0)
+            {
+                IsEnabled = false;
+                ShowWarning = true;
+                WarningMessage = "Selected set has no question in it";
+            }
+            else if (_stackSelected?.getQuestions().Count < 5)
+            {
+                ShowWarning = true;
+                WarningMessage = "Selected set has less than 5 questions in it";
+            }
+            else
+            {
+                ShowWarning = false;
+            }
+
+            LoadImage(value?.PictureUrl);
+        }
+    }
+
+    // Show open file dialog
+
+    public AvaloniaList<QuestionStack> QuestionStackList { get; }
+    public ReactiveCommand<QuestionStack, IRoutableViewModel> GoPractice { get; }
+    public ReactiveCommand<QuestionStack, IRoutableViewModel> GoCompetitive { get; }
+
+    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
+    public IScreen HostScreen { get; }
 
 
     private void LoadImage(string? pictureUrl)

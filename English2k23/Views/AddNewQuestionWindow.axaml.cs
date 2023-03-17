@@ -1,5 +1,5 @@
-using Avalonia;
 using System.Reactive;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
@@ -19,19 +19,31 @@ public partial class AddNewQuestionWindow : ReactiveWindow<AddNewQuestionViewMod
         this.AttachDevTools();
 #endif
     }
-    
+
     private async Task DoShowDialogAsync(InteractionContext<Unit, string?> interaction)
     {
         var dialog = new OpenFileDialog();
         dialog.AllowMultiple = false;
         dialog.Title = "Select a video!";
-        dialog.Filters.Add(
+        dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + $"Videos{Path.DirectorySeparatorChar}";
+        dialog.Filters?.Add(
             new FileDialogFilter { Extensions = { "mp4" } }
         );
 
         var result = await dialog.ShowAsync(this);
-        if (result != null) interaction.SetOutput(result.FirstOrDefault());
-        else interaction.SetOutput("null");
+        if (result != null && result.Length == 0)
+        {
+            interaction.SetOutput("");
+            return;
+        }
+
+        var splittedRes = result?[0].Split($"Videos{Path.DirectorySeparatorChar}");
+        Console.WriteLine(result?[0]);
+
+        if (splittedRes == null || splittedRes.Length < 2)
+            interaction.SetOutput("");
+        else
+            interaction.SetOutput(splittedRes[1]);
     }
 
     private void InitializeComponent()

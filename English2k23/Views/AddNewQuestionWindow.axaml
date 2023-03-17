@@ -5,29 +5,30 @@
         xmlns:viewModels="clr-namespace:English2k23.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="English2k23.Views.AddNewQuestionWindow"
-        Title="AddNewQuestionWindow"
+        Title="English2k23 - Add a new question"
         TransparencyLevelHint="AcrylicBlur"
-        ExtendClientAreaToDecorationsHint="True">
-    
+        ExtendClientAreaToDecorationsHint="True"
+        Width="700" Height="500"
+        Classes="MainHostScreen">
+
     <Design.DataContext>
         <viewModels:AddNewQuestionViewModel />
     </Design.DataContext>
-    <StackPanel>
-        <ExperimentalAcrylicBorder IsHitTestVisible="False">
-            <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial
-                    BackgroundSource="Digger"
-                    TintColor="Black"
-                    TintOpacity="1"
-                    MaterialOpacity="0.65" />
-            </ExperimentalAcrylicBorder.Material>
-        </ExperimentalAcrylicBorder>
+    <Window.Styles>
+        <StyleInclude Source="/Assets/Styles/Style.xaml" />
+    </Window.Styles>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-        <TextBox Margin="40" Text="{Binding QuestionExpression}" Watermark="Enter the expression" />
-        <TextBox Margin="40" Text="{Binding QuestionDefinition}" Watermark="Enter the definition"/>
-        <TextBox Margin="40" Text="{Binding QuestionAnswers}" Watermark="Enter answers separated by a semicolon"/>
-        <Button Content="Select a video" Command="{Binding OpenFileDialogCommand}" />
-        <Button Content="Validate" Command="{Binding Validate}" />
+        <TextBox Margin="15" Text="{Binding QuestionExpression}" Watermark="Enter the expression" MinWidth="300" />
+        <TextBox Margin="15" Text="{Binding QuestionDefinition}" Watermark="Enter the definition" MinWidth="300" />
+        <TextBox Margin="15" Text="{Binding QuestionAnswers}" Watermark="Enter answers separated by a semicolon"
+                 MinWidth="300" />
+        <TextBlock Margin="15" Text="{Binding VideoUrl}" Classes="TextBoxBlock" MinWidth="300" />
+        <Button Content="Select a video" Command="{Binding OpenFileDialogCommand}"
+                HorizontalAlignment="Center" Margin="15" />
+        <Button Content="Validate" Command="{Binding Validate}"
+                IsEnabled="{Binding IsEnabled}"
+                HorizontalAlignment="Center" Margin="15" />
 
     </StackPanel>
 </Window>

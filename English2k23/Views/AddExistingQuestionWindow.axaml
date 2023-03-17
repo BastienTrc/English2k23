@@ -5,45 +5,41 @@
         xmlns:viewModels="clr-namespace:English2k23.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="English2k23.Views.AddExistingQuestionWindow"
-        Title="AddExistingQuestionWindow"
+        Title="English2k23 - AddExistingQuestionWindow"
         TransparencyLevelHint="AcrylicBlur"
-        ExtendClientAreaToDecorationsHint="True">
-        
+        ExtendClientAreaToDecorationsHint="True"
+        Width="700" Height="500"
+        Classes="MainHostScreen">
+
     <Design.DataContext>
         <viewModels:AddExistingQuestionViewModel />
     </Design.DataContext>
+    <Window.Styles>
+        <StyleInclude Source="/Assets/Styles/Style.xaml" />
+    </Window.Styles>
     <StackPanel>
-        <ExperimentalAcrylicBorder IsHitTestVisible="False">
-            <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial
-                    BackgroundSource="Digger"
-                    TintColor="Black"
-                    TintOpacity="1"
-                    MaterialOpacity="0.65" />
-            </ExperimentalAcrylicBorder.Material>
-        </ExperimentalAcrylicBorder>
-        
-        <TextBox VerticalAlignment="Center" Text="Select questions"/>
+        <TextBlock VerticalAlignment="Center" Text="Select questions" Margin="20" HorizontalAlignment="Center" />
         <ListBox Name="QuestList" Items="{Binding QuestionList}"
                  SelectionMode="Multiple,Toggle"
                  SelectedItems="{Binding SelectedItems}"
                  MaxHeight="500" MaxWidth="350"
-                 Margin="10">
+                 Margin="10"
+                 Classes="StackList">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Vertical" Margin="10" />
+                    <WrapPanel Orientation="Horizontal" ItemWidth="100" Margin="10" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="Black" CornerRadius="4" Padding="4">
+                    <Border CornerRadius="4" Padding="4" Classes="ListBoxBorder" HorizontalAlignment="Center">
                         <StackPanel Spacing="5">
-                            <TextBlock Text="{Binding Expression}" />
+                            <TextBlock Text="{Binding Expression}" Classes="ItemBg" HorizontalAlignment="Center" />
                         </StackPanel>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Content="Validate" Command="{Binding Validate}" />
+        <Button Content="Validate" Command="{Binding Validate}" HorizontalAlignment="Center" />
     </StackPanel>
 </Window>

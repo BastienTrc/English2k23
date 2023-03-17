@@ -1,4 +1,3 @@
-using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using English2k23.ViewModels;
@@ -12,10 +11,7 @@ public class ViewLocator : IDataTemplate
         var name = data.GetType().FullName!.Replace("ViewModel", "View");
         var type = Type.GetType(name);
 
-        if (type != null)
-        {
-            return (Control)Activator.CreateInstance(type)!;
-        }
+        if (type != null) return (Control)Activator.CreateInstance(type)!;
 
         return new TextBlock { Text = "Not Found: " + name };
     }

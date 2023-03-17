@@ -31,13 +31,13 @@
                     <Image Source="/Assets/icons/navigationPrevious.png" />
                 </Panel>
             </Button>
-            <TextBlock Text="{Binding Router.NavigationStack.Count}" Classes="GreenText"/>
+            <TextBlock Text="{Binding Router.NavigationStack.Count}" Classes="GreenText" />
             <Button Command="{Binding GoHome}">
                 <Panel>
                     <Image Source="/Assets/icons/navigationHome.png" />
                 </Panel>
             </Button>
-            <MenuItem Header="_File"  VerticalAlignment="Center">
+            <MenuItem Header="_File" VerticalAlignment="Center">
                 <MenuItem Header="_New" />
                 <Separator />
                 <MenuItem Header="_Open" />
@@ -55,7 +55,7 @@
                     <StackPanel>
                         <Button Command="{Binding GoEdit}" HorizontalAlignment="Center">
                             <Panel>
-                                <Image Source="/Assets/icons/editSset.png" MaxHeight="300" MaxWidth="300"/>
+                                <Image Source="/Assets/icons/editSset.png" MaxHeight="300" MaxWidth="300" />
                             </Panel>
                         </Button>
                         <TextBlock HorizontalAlignment="Center"> Edit questions </TextBlock>
@@ -64,7 +64,7 @@
                         <!-- <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
                         <Button Command="{Binding GoPractice}" HorizontalAlignment="Center">
                             <Panel>
-                                <Image Source="/Assets/icons/practice.png" MaxHeight="300" MaxWidth="300"/>
+                                <Image Source="/Assets/icons/practice.png" MaxHeight="300" MaxWidth="300" />
                             </Panel>
                         </Button>
                         <TextBlock HorizontalAlignment="Center"> Train! </TextBlock>

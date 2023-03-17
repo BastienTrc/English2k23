@@ -1,7 +1,7 @@
-using Avalonia.Collections;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
-using System.Reactive;
+using Avalonia.Collections;
 using English2k23.Models;
 using ReactiveUI;
 
@@ -11,26 +11,13 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
 {
     private Question? _selectedQuestion;
 
-    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
-    public IScreen HostScreen { get; }
-    public ReactiveCommand<Question, Unit> QuestionDeleted { get; }
-    public AvaloniaList<Question?> QuestionList { get; }
-
-    public Question? SelectedQuestion
-    {
-        get => _selectedQuestion;
-        set => this.RaiseAndSetIfChanged(ref _selectedQuestion, value);
-    }
-
     public EditStackViewModel(IScreen hostScreen, Game game, QuestionStack questionStack)
     {
         HostScreen = hostScreen;
         QuestionList = questionStack.getQuestions();
 
-        for (int i = 0; i < 4; i++)
-        {
-            QuestionList.Add(new Question("expr" + i, "def"+i, $"{i}_1; {i}_2 ; {i}_3; {i}_4", "path", false));
-        }
+        for (var i = 0; i < 4; i++)
+            QuestionList.Add(new Question("expr" + i, "def" + i, $"{i}_1; {i}_2 ; {i}_3; {i}_4", "path", false));
 
         _selectedQuestion = QuestionList[0];
 
@@ -44,23 +31,11 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
         {
             var addExistingQuestionViewModel = new AddExistingQuestionViewModel(game);
 
-            AvaloniaList<Question>? result = await ShowDialogExist.Handle(addExistingQuestionViewModel);
+            var result = await ShowDialogExist.Handle(addExistingQuestionViewModel);
             if (result != null)
-            {
                 foreach (var quest in result)
-                {
                     if (!questionStack.getQuestions().Contains(quest))
-                    {
                         game.AddQuestionToStack(questionStack, quest);
-                    }
-                }
-            }
-            else
-            {
-                var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow("title", "Error occured");
-                await messageBoxStandardWindow.Show();
-            }
         });
 
         //Handle add new question command
@@ -76,14 +51,16 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
                 game.AddQuestionToGame(result);
                 game.AddQuestionToStack(questionStack, result);
             }
-            else
-            {
-                var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-                    .GetMessageBoxStandardWindow("title", "Error occured");
-                await messageBoxStandardWindow.Show();
-            }
         });
+    }
 
+    public ReactiveCommand<Question, Unit> QuestionDeleted { get; }
+    public AvaloniaList<Question?> QuestionList { get; }
+
+    public Question? SelectedQuestion
+    {
+        get => _selectedQuestion;
+        set => this.RaiseAndSetIfChanged(ref _selectedQuestion, value);
     }
 
     // Handle add existing question command
@@ -95,4 +72,7 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
     public ICommand AddNewQuestionCommand { get; }
 
     public Interaction<AddNewQuestionViewModel, Question?> ShowDialogNew { get; }
+
+    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
+    public IScreen HostScreen { get; }
 }

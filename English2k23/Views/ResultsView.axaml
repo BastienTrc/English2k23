@@ -14,18 +14,19 @@
 
     <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="*,*">
         <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
-            Classes="Header" Text="Your results" HorizontalAlignment="Center"/>
+                   Classes="Header" Text="Your results" HorizontalAlignment="Center" />
         <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
-                   Text="{Binding QuestionStack.Name}" HorizontalAlignment="Center" Margin="10"/>
+                   Text="{Binding QuestionStack.Name}" HorizontalAlignment="Center" Margin="10" />
 
         <ListBox Grid.Row="2" Grid.Column="0" Items="{Binding Detail}" Classes="StackList"
-                 MaxWidth="600" MinWidth="200"  MaxHeight="550" Margin="30" HorizontalAlignment="Center">
+                 MaxWidth="600" MinWidth="200" MaxHeight="550" Margin="30" HorizontalAlignment="Center">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Classes="ListBoxBorder">
                         <StackPanel Orientation="Horizontal" Margin="10" Spacing="10">
-                            <TextBlock Text="{Binding Item2, StringFormat={}{0}:}" HorizontalAlignment="Right" Classes="ItemBg" />
-                            <TextBlock Text="{Binding Item1}" HorizontalAlignment="Left" Classes="ItemBg"/>
+                            <TextBlock Text="{Binding Item2, StringFormat={}{0}:}" HorizontalAlignment="Right"
+                                       Classes="ItemBg" />
+                            <TextBlock Text="{Binding Item1}" HorizontalAlignment="Left" Classes="ItemBg" />
                         </StackPanel>
                     </Border>
                 </DataTemplate>
@@ -33,8 +34,8 @@
         </ListBox>
 
         <StackPanel Grid.Row="2" Grid.Column="1" Spacing="10" HorizontalAlignment="Center" MaxHeight="550" Margin="30">
-            <TextBlock Text="{Binding Score, StringFormat=Your score : {0}}" HorizontalAlignment="Center"/>
-            <TextBlock Text="Practice another set" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding Score, StringFormat=Your score : {0}}" HorizontalAlignment="Center" />
+            <TextBlock Text="Practice another set" HorizontalAlignment="Center" />
             <Button Command="{Binding GoToPractice}">
                 <Panel Width="200" Height="200">
                     <Image Source="/Assets/icons/practice.png" />
@@ -42,6 +43,5 @@
             </Button>
         </StackPanel>
 
-        </Grid>
+    </Grid>
 </UserControl>
-

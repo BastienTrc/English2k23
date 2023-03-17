@@ -1,0 +1,40 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:English2k23.Views"
+        xmlns:unofficial="clr-namespace:LibVLCSharp.Avalonia.Unofficial;assembly=LibVLCSharp.Avalonia.Unofficial"
+        xmlns:viewModels="clr-namespace:English2k23.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="English2k23.Views.VideoPlayerWindow"
+        Title="VideoPlayer">
+    <Design.DataContext>
+        <viewModels:VideoPlayerModel />
+    </Design.DataContext>
+
+    <Panel
+        Margin="10"		
+        Background="Blue"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        Name="PanelView">
+
+        <unofficial:VideoView
+            Margin="10"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            x:Name="VideoViewer">
+
+            <!-- Content -->
+            <Panel
+                VerticalAlignment="Bottom"
+                Opacity="0.8"
+                Background="Gray">
+                <views:PlayerControls/>
+            </Panel>
+			
+        </unofficial:VideoView>		
+				
+    </Panel>
+
+</Window>

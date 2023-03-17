@@ -1,8 +1,7 @@
 using System.Reactive;
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using English2k23.Models;
@@ -73,5 +72,18 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
         var result = await dialog.ShowAsync(this);
         interaction.SetOutput(result != null ? result.FirstOrDefault() : "null");
+    }
+
+    public async Task DoShowVideoPlayerAsync(InteractionContext<VideoPlayerModel, Unit> interaction)
+    {
+        var dialog = new VideoPlayerWindow
+        {
+            Title = "Video hint!",
+            Opacity = 0.75,
+            DataContext = interaction.Input
+        };
+
+        var result = await dialog.ShowDialog<Unit>(this);
+        interaction.SetOutput(result);
     }
 }

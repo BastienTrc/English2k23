@@ -6,32 +6,43 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ImplicitUsings>true</ImplicitUsings>
+
+        <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
+        <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
+        <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\" />
-        <AvaloniaResource Include="Assets\**" />
-        <AvaloniaResource Include="Pictures\**" />
-        <Folder Include="Pictures" />
-        <None Remove=".gitignore" />
-        <None Remove="Views\icons\addBtn.png" />
-        <None Remove="Views\icons\deckCreated.png" />
-        <None Remove="Views\icons\deckEdited.png" />
+        <Folder Include="Models\"/>
+        <AvaloniaResource Include="Assets\**"/>
+        <AvaloniaResource Include="Pictures\**"/>
+        <Folder Include="Pictures"/>
+        <None Remove=".gitignore"/>
+        <None Remove="Views\icons\addBtn.png"/>
+        <None Remove="Views\icons\deckCreated.png"/>
+        <None Remove="Views\icons\deckEdited.png"/>
     </ItemGroup>
 
     <ItemGroup>
-        <TrimmerRootDescriptor Include="Roots.xml" />
+        <TrimmerRootDescriptor Include="Roots.xml"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.18" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
+        <PackageReference Include="Avalonia" Version="0.10.18"/>
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.18"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.18" />
-        <PackageReference Include="MessageBox.Avalonia" Version="2.1.0" />
-        <PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
-        <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18"/>
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.18"/>
+        <PackageReference Include="LibVLCSharp" Version="3.6.8"/>
+        <PackageReference Include="MessageBox.Avalonia" Version="2.1.0"/>
+        <PackageReference Include="ReactiveUI.Validation" Version="3.1.7"/>
+
+        <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1"/>
+
+        <PackageReference Condition="$([MSBuild]::IsOsPlatform('Windows'))" Include="VideoLAN.LibVLC.Windows" Version="3.0.18"/>
+        <PackageReference Condition="$([MSBuild]::IsOsPlatform('OSX'))" Include="VideoLAN.LibVLC.Mac" Version="3.1.3.1"/>
+
+
     </ItemGroup>
 
     <ItemGroup>
@@ -39,6 +50,10 @@
             <DependentUpon>TrainView.axaml</DependentUpon>
         </Compile>
     </ItemGroup>
-    
+
+    <ItemGroup>
+        <ProjectReference Include="..\libvlcsharp-3.x\samples\LibVLCSharp.Avalonia.Unofficial.Samples\LibVLCSharp.Avalonia.Unofficial\LibVLCSharp.Avalonia.Unofficial.csproj"/>
+    </ItemGroup>
+
 
 </Project>

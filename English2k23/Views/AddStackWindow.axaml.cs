@@ -1,12 +1,9 @@
 using System.Reactive;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using English2k23.ViewModels;
 using ReactiveUI;
-using Avalonia.Diagnostics;
-using Microsoft.VisualBasic;
 
 namespace English2k23.Views;
 
@@ -25,14 +22,25 @@ public partial class AddStackWindow : ReactiveWindow<AddStackViewModel>
 
         dialog.AllowMultiple = false;
         dialog.Title = "Select a picture!";
-        dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + "Pictures/";
-        Console.WriteLine(dialog.Directory);
-        dialog.Filters.Add(
+        dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + $"Pictures{Path.DirectorySeparatorChar}";
+        dialog.Filters?.Add(
             new FileDialogFilter { Extensions = { "png", "jpg", "jpeg" } }
         );
 
         var result = await dialog.ShowAsync(this);
-        interaction.SetOutput(result != null ? result.FirstOrDefault() : "null");
+        if (result != null && result.Length == 0)
+        {
+            interaction.SetOutput("");
+            return;
+        }
+
+        var splittedRes = result?[0].Split($"Pictures{Path.DirectorySeparatorChar}");
+        Console.WriteLine(result?[0]);
+
+        if (splittedRes is null || splittedRes.Length < 2)
+            interaction.SetOutput("");
+        else
+            interaction.SetOutput(splittedRes[1]);
     }
 
     private void InitializeComponent()
