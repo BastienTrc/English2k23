@@ -17,7 +17,7 @@
     <Grid ColumnDefinitions="1.2*, 4, 1.8*">
 
         <Grid Grid.Column="0"
-              RowDefinitions="*,6*,*" ColumnDefinitions="*,*,*,*"
+              RowDefinitions="*,6*,*,*" ColumnDefinitions="*,*,*,*"
               VerticalAlignment="Top" HorizontalAlignment="Center">
 
             <TextBlock Text="Edit your set!"
@@ -56,6 +56,19 @@
                     Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="1"
                     HorizontalAlignment="Center"
                     Margin="10,10,10,15" />
+            <Button Content="Save a set"
+                    Classes="BorderButton"
+                    IsEnabled="{Binding IsEnabled}"
+                    Command="{Binding SaveStackCommand}"
+                    Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    Margin="10,10,10,15"/>
+            <Button Content="Load a set"
+                    Classes="BorderButton"
+                    Command="{Binding LoadStackCommand}"
+                    Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="2"
+                    HorizontalAlignment="Center"
+                    Margin="10,10,10,15"/>
         </Grid>
 
         <GridSplitter Grid.Column="1" Background="white" ResizeDirection="Columns" />

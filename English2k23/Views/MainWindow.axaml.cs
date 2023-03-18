@@ -113,6 +113,34 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         else
             interaction.SetOutput(splittedRes[1]);
     }
+    
+    public async Task DoShowSaveDialogAsync(InteractionContext<Unit, string?> interaction)
+    {
+        var dialog = new SaveFileDialog();
+        
+        dialog.Title = "Save as";
+        dialog.DefaultExtension="json";
+        dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + "Pictures/";
+
+        var result = await dialog.ShowAsync(this);
+        interaction.SetOutput(result);
+    }
+    
+    public async Task DoShowLoadDialogAsync(InteractionContext<Unit, string?> interaction)
+    {
+        var dialog = new OpenFileDialog();
+
+        dialog.AllowMultiple = false;
+        dialog.Title = "Select a save file!";
+        dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + "Pictures/";
+        Console.WriteLine(dialog.Directory);
+        dialog.Filters.Add(
+            new FileDialogFilter { Extensions = { "json" } }
+        );
+
+        var result = await dialog.ShowAsync(this);
+        interaction.SetOutput(result != null ? result.FirstOrDefault() : "null");
+    }
 
     public async Task DoShowVideoPlayerAsync(InteractionContext<VideoPlayerModel, Unit> interaction)
     {

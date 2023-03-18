@@ -1,6 +1,7 @@
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using System.Text.Json;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Media.Imaging;
@@ -54,6 +55,40 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
             if (StackSelected != null) StackSelected.PictureUrl = result;
             LoadImage(result);
         });
+        
+        ShowSaveDialog = new Interaction<Unit, String?>();
+        SaveStackCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                var result = await ShowSaveDialog.Handle(new Unit());
+
+                if (StackSelected != null && result != null)
+                {
+                    var saveStack = new SaveStack(StackSelected);
+                    var jsonString = JsonSerializer.Serialize(saveStack);
+                    File.WriteAllText(result, jsonString);
+                }
+            }
+        );
+        
+        ShowLoadDialog = new Interaction<Unit, String?>();
+        LoadStackCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                var result = await ShowLoadDialog.Handle(new Unit());
+
+                if (result != null)
+                {
+                    var options = new JsonSerializerOptions
+                    {
+                        IncludeFields = true,
+                    };
+                    var jsonString = File.ReadAllText(result);
+                    var save = JsonSerializer.Deserialize<SaveStack>(jsonString,options)!;
+                    var stack = new QuestionStack(save.Name, save.Description, save.PictureUrl);
+                    game.AddStack(stack);
+                    save.questionList.ForEach(quest=>game.AddQuestionToStack(stack,quest));
+                }
+            }
+        );
 
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
         try
@@ -98,6 +133,14 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
 
     public AvaloniaList<QuestionStack> QuestionStackList { get; }
 
+    // Save dialog
+    public ICommand SaveStackCommand { get; }
+    public Interaction<Unit, string?> ShowSaveDialog { get; }
+    
+    // Load dialog
+    public ICommand LoadStackCommand { get; }
+    public Interaction<Unit, string?> ShowLoadDialog { get; }
+    
     // Handle add stack command
     public ICommand AddStackCommand { get; }
     public Interaction<AddStackViewModel, QuestionStack?> ShowAddStackDialog { get; }
