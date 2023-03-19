@@ -16,10 +16,10 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
         HostScreen = hostScreen;
         QuestionList = questionStack.getQuestions();
 
-        for (var i = 0; i < 4; i++)
-            QuestionList.Add(new Question("expr" + i, "def" + i, $"{i}_1; {i}_2 ; {i}_3; {i}_4", "path", false));
-
-        _selectedQuestion = QuestionList[0];
+        if (QuestionList.Count != 0)
+        {
+            SelectedQuestion = QuestionList[0];
+        }
 
         QuestionDeleted = ReactiveCommand.Create<Question>(
             quest => game.RemoveQuestionFromStack(questionStack, quest));

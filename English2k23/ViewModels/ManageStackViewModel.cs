@@ -29,7 +29,6 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
             stack => HostScreen.Router.Navigate.Execute(new EditStackViewModel(HostScreen, game, stack)));
 
         QuestionStackList = game.QuestionStacks;
-        for (var i = 0; i < 5; i++) QuestionStackList.Add(new QuestionStack("a" + i, "b" + 2 * i, "c" + 3 * i));
 
         StackDeleted = ReactiveCommand.Create<QuestionStack>(
             stack => QuestionStackList.Remove(stack)

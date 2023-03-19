@@ -105,6 +105,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
 
                 AnswerStyleChosen = true;
                 ShowUserAnswer = true;
+                ShowVideo = true;
 
                 _timer?.Stop();
                 await ShowVideoDialog.Handle(videoPlayerModel);
@@ -116,10 +117,11 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             DisplayVideo = ReactiveCommand.CreateFromTask( () =>
-            {
-                _timer?.Stop();
+                {
+                    _timer?.Stop();
                 AnswerStyleChosen = true;
                 ShowUserAnswer = true;
+                ShowVideo = true;
 
                 Play();
                 return null;
@@ -148,7 +150,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
                 return;
             }
 
-            if (ShowUserAnswer && string.Equals(UserAnswer, currAnswer,
+            if (ShowUserAnswer && !ShowVideo && string.Equals(UserAnswer, currAnswer,
                     StringComparison.CurrentCultureIgnoreCase))
             {
                 Score += 5;

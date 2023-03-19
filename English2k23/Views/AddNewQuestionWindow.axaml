@@ -19,8 +19,8 @@
     </Window.Styles>
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-        <TextBox Margin="15" Text="{Binding QuestionExpression}" Watermark="Enter the expression" MinWidth="300" />
-        <TextBox Margin="15" Text="{Binding QuestionDefinition}" Watermark="Enter the definition" MinWidth="300" />
+        <TextBox Margin="15" Text="{Binding QuestionExpression}" Watermark="Enter the expression / Answer" MinWidth="300" />
+        <TextBox Margin="15" Text="{Binding QuestionDefinition}" Watermark="Enter the definition / Question" MinWidth="300" />
         <TextBox Margin="15" Text="{Binding FirstChoice}" Watermark="Enter first false choice"
                  MinWidth="300" />
         <TextBox Margin="15" Text="{Binding SecondChoice}" Watermark="Enter second false choice"
