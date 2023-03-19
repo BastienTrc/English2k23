@@ -26,7 +26,7 @@ public partial class VideoPlayerWindow : ReactiveWindow<VideoPlayerModel>
         Opened += MainWindow_Opened;
     }
 
-    public static VideoPlayerWindow GetInstance()
+    public static VideoPlayerWindow? GetInstance()
     {
         return _this;
     }

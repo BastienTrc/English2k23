@@ -66,7 +66,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         dialog.Title = "Select a picture!";
         dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + $"Pictures{Path.DirectorySeparatorChar}";
         Console.WriteLine(dialog.Directory);
-        dialog.Filters.Add(
+        dialog.Filters?.Add(
             new FileDialogFilter { Extensions = { "png", "jpg", "jpeg" } }
         );
 
@@ -94,7 +94,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         dialog.Title = "Select a video!";
         dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + $"Videos{Path.DirectorySeparatorChar}";
         Console.WriteLine(dialog.Directory);
-        dialog.Filters.Add(
+        dialog.Filters?.Add(
             new FileDialogFilter { Extensions = { "mp4" } }
         );
 
@@ -120,7 +120,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         
         dialog.Title = "Save as";
         dialog.DefaultExtension="json";
-        dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + "Pictures/";
+        dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + "Set" + Path.DirectorySeparatorChar;
 
         var result = await dialog.ShowAsync(this);
         interaction.SetOutput(result);
@@ -132,14 +132,14 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 
         dialog.AllowMultiple = false;
         dialog.Title = "Select a save file!";
-        dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + "Pictures/";
+        dialog.Directory = AppDomain.CurrentDomain.BaseDirectory + "Set"+ Path.DirectorySeparatorChar;
         Console.WriteLine(dialog.Directory);
         dialog.Filters.Add(
             new FileDialogFilter { Extensions = { "json" } }
         );
 
         var result = await dialog.ShowAsync(this);
-        interaction.SetOutput(result != null ? result.FirstOrDefault() : "null");
+        interaction.SetOutput(result?.FirstOrDefault());
     }
 
     public async Task DoShowVideoPlayerAsync(InteractionContext<VideoPlayerModel, Unit> interaction)

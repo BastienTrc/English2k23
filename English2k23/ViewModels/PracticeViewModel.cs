@@ -34,7 +34,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
 
     private string _infoMsg = "Find the expression!";
 
-    private readonly LibVLC? _libVLC;
+    private readonly LibVLC? _libVlc;
 
     private double _progressBarValue;
 
@@ -47,6 +47,9 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
     private bool _showUserAnswer;
 
     private bool _showVideo;
+    
+    
+    public bool IsCompetitive { get; }
 
     private Timer? _timer;
 
@@ -54,10 +57,12 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
     private bool _tooLate; // If user took too much time to answer
     public MediaPlayer? MediaPlayer;
 
-    public PracticeViewModel(IScreen hostScreen, QuestionStack stack)
+    public PracticeViewModel(IScreen hostScreen, QuestionStack stack, bool isCompetitive)
     {
         HostScreen = hostScreen;
 
+        IsCompetitive = isCompetitive;
+        
         _stack = stack;
         var questionList = _stack.getQuestions();
         CurrQuestion = questionList[0];
@@ -80,12 +85,12 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
                 Core.Initialize();
             }
 
-            _libVLC = new LibVLC(
+            _libVlc = new LibVLC(
                 true
             );
-            _libVLC.Log += VlcLogger_Event;
+            _libVlc.Log += VlcLogger_Event;
 
-            MediaPlayer = new MediaPlayer(_libVLC);
+            MediaPlayer = new MediaPlayer(_libVlc);
             MediaPlayer.EndReached += MediaPlayer_EndReached;
             MediaPlayer.Fullscreen = true;
         }
@@ -110,13 +115,14 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
 
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            DisplayVideo = ReactiveCommand.CreateFromTask(async () =>
+            DisplayVideo = ReactiveCommand.CreateFromTask( () =>
             {
                 _timer?.Stop();
                 AnswerStyleChosen = true;
                 ShowUserAnswer = true;
 
                 Play();
+                return null;
             });
         }
 
@@ -258,7 +264,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
     private ReactiveCommand<Unit, IRoutableViewModel> GoToResults { get; } // End of the game
 
     // Handle add stack command
-    public ICommand DisplayVideo { get; }
+    public ICommand? DisplayVideo { get; }
     public Interaction<VideoPlayerModel, Unit> ShowVideoDialog { get; }
     public string? UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
     public IScreen HostScreen { get; }
@@ -294,7 +300,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
         _timer = new Timer(RefreshTime);
         _timer.Elapsed += (_, _) =>
         {
-            if (TimerValue == 1000) // Max value of the progressBar
+            if (TimerValue == 1000 && IsCompetitive) // Max value of the progressBar
             {
                 InfoMsg = $"Too late, no points can be earned! The answer was {_currQuestion?.Expression}";
                 _tooLate = true;
@@ -331,18 +337,18 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
 
     public void Play()
     {
-        if (_libVLC != null && MediaPlayer != null)
+        if (_libVlc != null && MediaPlayer != null)
         {
             //string[] Media_AdditionalOptions = {
             //    $":avcodec-hw=any"
             //};
-            string[] Media_AdditionalOptions = { };
+            string[] mediaAdditionalOptions = { };
 
             using var media = new Media(
-                _libVLC,
+                _libVlc,
                 new Uri(
                     $"{AppDomain.CurrentDomain.BaseDirectory}Videos{Path.DirectorySeparatorChar}{CurrQuestion?.PathToVideo}"),
-                Media_AdditionalOptions
+                mediaAdditionalOptions
             );
             MediaPlayer.Play(media);
             media.Dispose();
@@ -354,9 +360,9 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
         if (MediaPlayer != null) MediaPlayer.Stop();
     }
 
-    private void MediaPlayer_EndReached(object sender, EventArgs e)
+    private void MediaPlayer_EndReached(object? sender, EventArgs e)
     {
         ThreadPool.QueueUserWorkItem(_ => MediaPlayer?.Stop());
-        _timer.Start();
+        _timer?.Start();
     }
 }

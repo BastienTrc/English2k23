@@ -54,7 +54,7 @@ public class Game
         return questionStack;
     }
 
-    public ReactiveCommand<QuestionStack, Unit> RemoveStack(QuestionStack questionStack)
+    public ReactiveCommand<QuestionStack, Unit>? RemoveStack(QuestionStack questionStack)
     {
         QuestionStacks.Remove(questionStack);
         return null;

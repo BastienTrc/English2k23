@@ -28,7 +28,7 @@ public class ResultsViewModel : ReactiveObject, IRoutableViewModel
     private int Score { get; }
     public List<Tuple<string, int>> Detail { get; }
 
-    private ReactiveCommand<Unit, IRoutableViewModel?> GoTryAgain { get; }
+    private ReactiveCommand<Unit, IRoutableViewModel?>? GoTryAgain { get; }
     private ReactiveCommand<Unit, IRoutableViewModel?> GoToPractice { get; }
     public string? UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
     public IScreen HostScreen { get; }

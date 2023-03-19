@@ -7,7 +7,7 @@ namespace English2k23.ViewModels;
 
 public class VideoPlayerModel : ViewModelBase
 {
-    private string _errorMsg;
+    private string? _errorMsg;
     private readonly LibVLC? _libVLC;
     private readonly string? _videoPath;
     public MediaPlayer? MediaPlayer;
@@ -40,12 +40,12 @@ public class VideoPlayerModel : ViewModelBase
         }
     }
 
-    private void MediaPlayer_EndReached(object sender, EventArgs e)
+    private void MediaPlayer_EndReached(object? sender, EventArgs e)
     {
         ThreadPool.QueueUserWorkItem(_ => MediaPlayer?.Stop());
     }
 
-    public string ErrorMsg
+    public string? ErrorMsg
     {
         get => _errorMsg;
         set => this.RaiseAndSetIfChanged(ref _errorMsg, value);

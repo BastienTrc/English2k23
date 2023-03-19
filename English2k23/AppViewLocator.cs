@@ -6,7 +6,7 @@ namespace English2k23;
 
 public class AppViewLocator : IViewLocator
 {
-    public IViewFor ResolveView<T>(T viewModel, string? contract = null)
+    public IViewFor ResolveView<T>(T? viewModel, string? contract = null)
     {
         return viewModel switch
         {

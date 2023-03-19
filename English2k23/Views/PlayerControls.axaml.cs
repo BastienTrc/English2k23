@@ -7,7 +7,7 @@ namespace English2k23.Views;
 public partial class PlayerControls : UserControl
 {
     public Panel _playerControl;
-    private static PlayerControls _this;
+    private static PlayerControls? _this;
 
     public PlayerControls()
     {
@@ -16,7 +16,7 @@ public partial class PlayerControls : UserControl
         _playerControl = this.Get<Panel>("ControlPlayer");
     }
 
-    public static PlayerControls GetInstance()
+    public static PlayerControls? GetInstance()
     {
         return _this;
     }

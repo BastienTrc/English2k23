@@ -26,13 +26,13 @@
             <TextBlock
                 HorizontalAlignment="Center"
                 Text="{Binding Score, StringFormat=Score : {0}}"
-                Margin="10" />
+                Margin="10" IsVisible="{Binding IsCompetitive}"/>
             <TextBlock
                 HorizontalAlignment="Center"
                 Text="{Binding InfoMsg}"
                 Margin="10" IsVisible="{Binding InfoMsg}" />
             
-            <ProgressBar Maximum="1000" Value="{Binding TimerValue}" />
+            <ProgressBar Maximum="1000" Value="{Binding TimerValue}" IsVisible="{Binding IsCompetitive}"/>
             
             <TextBox HorizontalAlignment="Center" Text="{Binding UserAnswer}" 
                      IsVisible="{Binding ShowUserAnswer}" MinWidth="300"/>

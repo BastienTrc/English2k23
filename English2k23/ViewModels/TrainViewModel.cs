@@ -28,10 +28,10 @@ public class TrainViewModel : ReactiveObject, IRoutableViewModel
         QuestionStackList = game.QuestionStacks;
 
         GoPractice = ReactiveCommand.CreateFromObservable<QuestionStack, IRoutableViewModel>(stack =>
-            HostScreen.Router.Navigate.Execute(new PracticeViewModel(HostScreen, stack)));
+            HostScreen.Router.Navigate.Execute(new PracticeViewModel(HostScreen, stack, false)));
 
         GoCompetitive = ReactiveCommand.CreateFromObservable<QuestionStack, IRoutableViewModel>(stack =>
-            HostScreen.Router.Navigate.Execute(new CompetitiveViewModel(HostScreen, game, stack)));
+            HostScreen.Router.Navigate.Execute(new PracticeViewModel(HostScreen, stack, true)));
 
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
         try
@@ -109,7 +109,8 @@ public class TrainViewModel : ReactiveObject, IRoutableViewModel
     {
         try
         {
-            ImageToLoad = new Bitmap(AppDomain.CurrentDomain.BaseDirectory + "Pictures\\" + pictureUrl);
+            ImageToLoad = new Bitmap(
+                $"{AppDomain.CurrentDomain.BaseDirectory}Pictures{Path.DirectorySeparatorChar}{pictureUrl}");
         }
         catch (Exception)
         {
