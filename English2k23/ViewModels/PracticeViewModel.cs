@@ -47,7 +47,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
     private bool _showUserAnswer;
 
     private bool _showVideo;
-    
+    private bool _isAvailable;
     
     public bool IsCompetitive { get; }
 
@@ -67,6 +67,13 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
         var questionList = _set.getQuestions();
         Shuffle(questionList);
         CurrQuestion = questionList[0];
+        IsAvailable = false;
+        if (CurrQuestion.VideoMode &&
+            File.Exists(
+                $"{AppDomain.CurrentDomain.BaseDirectory}Videos{Path.DirectorySeparatorChar}{CurrQuestion?.PathToVideo}")&&CurrQuestion.PathToVideo!="path")
+        {
+            IsAvailable = true;
+        }
         NbOfQuestion = questionList.Count;
 
         DisplayNone = ReactiveCommand.Create(() => // No help
@@ -117,7 +124,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
 
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            DisplayVideo = ReactiveCommand.CreateFromTask( () =>
+            DisplayVideo = ReactiveCommand.CreateFromTask( async () =>
                 {
                     _timer?.Stop();
                 AnswerStyleChosen = true;
@@ -125,8 +132,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
                 ShowVideo = true;
 
                 Play();
-                return null;
-            });
+                });
         }
 
 
@@ -206,6 +212,12 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
             };
             Shuffle(AnswersList);
         }
+    }
+
+    public bool IsAvailable
+    {
+        get => _isAvailable;
+        set => this.RaiseAndSetIfChanged(ref _isAvailable, value);
     }
 
     public AvaloniaList<string>? AnswersList
@@ -294,6 +306,14 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
         ShowUserAnswer = false;
         ShowVideo = false;
         AnswerStyleChosen = false;
+        
+        IsAvailable = false;
+        if (CurrQuestion.VideoMode &&
+            File.Exists(
+                $"{AppDomain.CurrentDomain.BaseDirectory}Videos{Path.DirectorySeparatorChar}{CurrQuestion?.PathToVideo}"))
+        {
+            IsAvailable = true;
+        }
 
         QuestionCountdown();
     }
