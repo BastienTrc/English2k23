@@ -50,6 +50,10 @@ public class ManageSetViewModel : ReactiveObject, IRoutableViewModel
             // No need to create and give a viewModel as OpenFileDialog don't need one
             var result = await ShowEditPictureDialog.Handle(new Unit());
 
+            if (string.IsNullOrEmpty(result))
+            {
+                return;
+            }
             // If PictureURL wasn't specified then it contains "null"
             if (StackSelected != null) StackSelected.PictureUrl = result;
             LoadImage(result);

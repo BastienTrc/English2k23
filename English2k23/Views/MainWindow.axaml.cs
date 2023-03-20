@@ -71,7 +71,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         );
 
         var result = await dialog.ShowAsync(this);
-        if (result != null && result.Length == 0)
+        if (result == null || result.Length == 0)
         {
             interaction.SetOutput("");
             return;

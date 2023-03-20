@@ -21,7 +21,7 @@
               RowDefinitions="*,6*,*" ColumnDefinitions="*,*,*,*"
               VerticalAlignment="Top" HorizontalAlignment="Center">
 
-            <TextBlock Text="Choose your set!"
+            <TextBlock Text="Choose your set !"
                        FontSize="24"
                        VerticalAlignment="Top" HorizontalAlignment="Center"
                        Grid.ColumnSpan="4" Grid.Row="0"
@@ -67,14 +67,14 @@
                        Grid.Row="0"
                        Margin="10,10,10,20" />
 
-            <Button Grid.Row="1" Grid.Column="0" Content="PracticeMode"
+            <Button Grid.Row="1" Grid.Column="0" Content="Practice Mode"
                     Classes="BorderButton"
                     Command="{Binding GoPractice}" CommandParameter="{Binding #StackList.SelectedItem}"
                     IsEnabled="{Binding IsEnabled}"
                     HorizontalAlignment="Center" Margin="10" />
 
 
-            <Button Content="CompetitiveMode"
+            <Button Content="Competitive Mode"
                     Classes="BorderButton"
                     Grid.Row="1" Grid.Column="2" Command="{Binding GoCompetitive}"
                     CommandParameter="{Binding #StackList.SelectedItem}"

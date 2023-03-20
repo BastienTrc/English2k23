@@ -67,7 +67,7 @@
                                 <Image Source="/Assets/icons/practice.png" MaxHeight="300" MaxWidth="300" />
                             </Panel>
                         </Button>
-                        <TextBlock HorizontalAlignment="Center"> Train! </TextBlock>
+                        <TextBlock HorizontalAlignment="Center"> Train ! </TextBlock>
                     </StackPanel>
                 </StackPanel>
             </reactiveUi:RoutedViewHost.DefaultContent>
