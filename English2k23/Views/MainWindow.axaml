@@ -8,7 +8,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="English2k23.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="English2k23"
+        Title="Vidioms"
         Classes="MainHostScreen">
     <Window.Styles>
         <StyleInclude Source="/Assets/Styles/Style.xaml" />
