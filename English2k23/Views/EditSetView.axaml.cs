@@ -7,9 +7,9 @@ using ReactiveUI;
 
 namespace English2k23.Views;
 
-public partial class EditStackView : ReactiveUserControl<EditStackViewModel>
+public partial class EditSetView : ReactiveUserControl<EditSetViewModel>
 {
-    public EditStackView()
+    public EditSetView()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime
             {

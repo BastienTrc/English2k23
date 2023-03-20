@@ -4,14 +4,14 @@ using ReactiveUI;
 
 namespace English2k23.Models;
 
-public class QuestionStack : ReactiveObject
+public class QuestionSet : ReactiveObject
 {
     private string? _description;
     private string? _name;
     private string? _pictureUrl;
     private readonly AvaloniaList<Question?> questionList = new();
 
-    public QuestionStack(string? name, string? description, string? pictureUrl)
+    public QuestionSet(string? name, string? description, string? pictureUrl)
     {
         _name = name;
         _description = description;

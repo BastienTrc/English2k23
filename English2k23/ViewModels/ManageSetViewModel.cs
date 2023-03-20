@@ -11,7 +11,7 @@ using ReactiveUI;
 
 namespace English2k23.ViewModels;
 
-public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
+public class ManageSetViewModel : ReactiveObject, IRoutableViewModel
 {
     private readonly Bitmap? _default;
 
@@ -19,26 +19,26 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
 
     private bool _isEnabled;
 
-    private QuestionStack? _stackSelected;
+    private QuestionSet? _stackSelected;
 
-    public ManageStackViewModel(IScreen hostScreen, Game game)
+    public ManageSetViewModel(IScreen hostScreen, Game game)
     {
         HostScreen = hostScreen;
 
-        GoStackEdit = ReactiveCommand.CreateFromObservable<QuestionStack, IRoutableViewModel?>(
-            stack => HostScreen.Router.Navigate.Execute(new EditStackViewModel(HostScreen, game, stack)));
+        GoStackEdit = ReactiveCommand.CreateFromObservable<QuestionSet, IRoutableViewModel?>(
+            stack => HostScreen.Router.Navigate.Execute(new EditSetViewModel(HostScreen, game, stack)));
 
         QuestionStackList = game.QuestionStacks;
 
-        StackDeleted = ReactiveCommand.Create<QuestionStack>(
+        StackDeleted = ReactiveCommand.Create<QuestionSet>(
             stack => QuestionStackList.Remove(stack)
         );
 
         // Handle add stack command
-        ShowAddStackDialog = new Interaction<AddStackViewModel, QuestionStack?>();
+        ShowAddStackDialog = new Interaction<AddSetViewModel, QuestionSet?>();
         AddStackCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var addStackViewModel = new AddStackViewModel();
+            var addStackViewModel = new AddSetViewModel();
 
             var result = await ShowAddStackDialog.Handle(addStackViewModel);
             if (result != null) QuestionStackList.Add(result);
@@ -62,7 +62,7 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
 
                 if (StackSelected != null && result != null)
                 {
-                    var saveStack = new SaveStack(StackSelected);
+                    var saveStack = new SaveSet(StackSelected);
                     var jsonString = JsonSerializer.Serialize(saveStack);
                     File.WriteAllText(result, jsonString);
                 }
@@ -81,10 +81,14 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
                         IncludeFields = true,
                     };
                     var jsonString = File.ReadAllText(result);
-                    var save = JsonSerializer.Deserialize<SaveStack>(jsonString,options)!;
-                    var stack = new QuestionStack(save.Name, save.Description, save.PictureUrl);
+                    var save = JsonSerializer.Deserialize<SaveSet>(jsonString,options)!;
+                    var stack = new QuestionSet(save.Name, save.Description, save.PictureUrl);
                     game.AddStack(stack);
-                    save.questionList.ForEach(quest=>game.AddQuestionToStack(stack,quest));
+                    save.questionList.ForEach(quest=>
+                    {
+                        game.AddQuestionToGame(quest);
+                        game.AddQuestionToStack(stack, quest);
+                    });
                 }
             }
         );
@@ -112,7 +116,7 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
         set => this.RaiseAndSetIfChanged(ref _imageToLoad, value);
     }
 
-    public QuestionStack? StackSelected
+    public QuestionSet? StackSelected
     {
         get => _stackSelected;
         set
@@ -123,14 +127,14 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
         }
     }
 
-    public ReactiveCommand<QuestionStack, IRoutableViewModel?> GoStackEdit { get; }
-    public ReactiveCommand<QuestionStack, Unit> StackDeleted { get; }
+    public ReactiveCommand<QuestionSet, IRoutableViewModel?> GoStackEdit { get; }
+    public ReactiveCommand<QuestionSet, Unit> StackDeleted { get; }
 
     // Show open file dialog
     public ICommand EditPictureCommand { get; }
     public Interaction<Unit, string?> ShowEditPictureDialog { get; }
 
-    public AvaloniaList<QuestionStack> QuestionStackList { get; }
+    public AvaloniaList<QuestionSet> QuestionStackList { get; }
 
     // Save dialog
     public ICommand SaveStackCommand { get; }
@@ -142,7 +146,7 @@ public class ManageStackViewModel : ReactiveObject, IRoutableViewModel
     
     // Handle add stack command
     public ICommand AddStackCommand { get; }
-    public Interaction<AddStackViewModel, QuestionStack?> ShowAddStackDialog { get; }
+    public Interaction<AddSetViewModel, QuestionSet?> ShowAddStackDialog { get; }
 
     public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
     public IScreen HostScreen { get; }

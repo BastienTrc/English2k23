@@ -7,9 +7,9 @@ using ReactiveUI;
 
 namespace English2k23.Views;
 
-public partial class AddStackWindow : ReactiveWindow<AddStackViewModel>
+public partial class AddSetWindow : ReactiveWindow<AddSetViewModel>
 {
-    public AddStackWindow()
+    public AddSetWindow()
     {
         InitializeComponent();
         this.WhenActivated(d => d(ViewModel!.Validate.Subscribe(Close)));

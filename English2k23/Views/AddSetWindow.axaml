@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:English2k23.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="English2k23.Views.AddStackWindow"
+        x:Class="English2k23.Views.AddSetWindow"
         Title="English2k23 - Add a stack"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
@@ -12,7 +12,7 @@
         Classes="MainHostScreen">
 
     <Design.DataContext>
-        <viewModels:AddStackViewModel />
+        <viewModels:AddSetViewModel />
     </Design.DataContext>
     <Window.Styles>
         <StyleInclude Source="/Assets/Styles/Style.xaml" />
@@ -29,13 +29,13 @@
         </ExperimentalAcrylicBorder>
 
         <TextBox Margin="10,10,10,5" HorizontalAlignment="Center" MinWidth="300"
-                 Text="{Binding StackName}" Watermark="Enter your stack name" />
+                 Text="{Binding StackName}" Watermark="Enter your set name" />
         <TextBox Margin="5" HorizontalAlignment="Center" MinWidth="300"
-                 Text="{Binding StackDescription}" Watermark="Enter your stack description" />
+                 Text="{Binding StackDescription}" Watermark="Enter your set description" />
         <TextBlock Text="{Binding PictureUrl}" Classes="TextBoxBlock"
                    MinWidth="300" />
         <Button Margin="5" HorizontalAlignment="Center"
-                Content="Select a picture for the stack" Command="{Binding OpenFileDialogCommand}" />
+                Content="Select a picture for the set" Command="{Binding OpenFileDialogCommand}" />
         <Button Margin="5" HorizontalAlignment="Center"
                 Content="Cancel" Command="{Binding Validate}" CommandParameter="Cancel" />
         <Button Margin="10,5,10,10" HorizontalAlignment="Center"

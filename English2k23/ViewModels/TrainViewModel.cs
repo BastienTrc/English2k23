@@ -17,7 +17,7 @@ public class TrainViewModel : ReactiveObject, IRoutableViewModel
 
     private bool _showWarning;
 
-    private QuestionStack? _stackSelected;
+    private QuestionSet? _stackSelected;
 
     private string? _warningMessage;
 
@@ -27,10 +27,10 @@ public class TrainViewModel : ReactiveObject, IRoutableViewModel
 
         QuestionStackList = game.QuestionStacks;
 
-        GoPractice = ReactiveCommand.CreateFromObservable<QuestionStack, IRoutableViewModel>(stack =>
+        GoPractice = ReactiveCommand.CreateFromObservable<QuestionSet, IRoutableViewModel>(stack =>
             HostScreen.Router.Navigate.Execute(new PracticeViewModel(HostScreen, stack, false)));
 
-        GoCompetitive = ReactiveCommand.CreateFromObservable<QuestionStack, IRoutableViewModel>(stack =>
+        GoCompetitive = ReactiveCommand.CreateFromObservable<QuestionSet, IRoutableViewModel>(stack =>
             HostScreen.Router.Navigate.Execute(new PracticeViewModel(HostScreen, stack, true)));
 
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
@@ -68,7 +68,7 @@ public class TrainViewModel : ReactiveObject, IRoutableViewModel
         set => this.RaiseAndSetIfChanged(ref _imageToLoad, value);
     }
 
-    public QuestionStack? StackSelected
+    public QuestionSet? StackSelected
     {
         get => _stackSelected;
         set
@@ -97,9 +97,9 @@ public class TrainViewModel : ReactiveObject, IRoutableViewModel
 
     // Show open file dialog
 
-    public AvaloniaList<QuestionStack> QuestionStackList { get; }
-    public ReactiveCommand<QuestionStack, IRoutableViewModel> GoPractice { get; }
-    public ReactiveCommand<QuestionStack, IRoutableViewModel> GoCompetitive { get; }
+    public AvaloniaList<QuestionSet> QuestionStackList { get; }
+    public ReactiveCommand<QuestionSet, IRoutableViewModel> GoPractice { get; }
+    public ReactiveCommand<QuestionSet, IRoutableViewModel> GoCompetitive { get; }
 
     public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
     public IScreen HostScreen { get; }

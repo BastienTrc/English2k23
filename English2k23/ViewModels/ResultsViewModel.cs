@@ -6,12 +6,12 @@ namespace English2k23.ViewModels;
 
 public class ResultsViewModel : ReactiveObject, IRoutableViewModel
 {
-    public ResultsViewModel(IScreen hostScreen, QuestionStack questionStack, int score, List<int> scoreDetails)
+    public ResultsViewModel(IScreen hostScreen, QuestionSet questionSet, int score, List<int> scoreDetails)
     {
         HostScreen = hostScreen;
-        QuestionStack = questionStack;
+        QuestionSet = questionSet;
         Score = score;
-        var questions = questionStack.getQuestions();
+        var questions = questionSet.getQuestions();
 
         Detail = new List<Tuple<string, int>>();
         for (var i = 0; i < scoreDetails.Count; i++)
@@ -24,7 +24,7 @@ public class ResultsViewModel : ReactiveObject, IRoutableViewModel
         });
     }
 
-    private QuestionStack QuestionStack { get; }
+    private QuestionSet QuestionSet { get; }
     private int Score { get; }
     public List<Tuple<string, int>> Detail { get; }
 

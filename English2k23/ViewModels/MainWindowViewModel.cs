@@ -17,7 +17,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
         // your view models, or to reuse existing view models.
 
         GoEdit = ReactiveCommand.CreateFromObservable(
-            () => Router.Navigate.Execute(new ManageStackViewModel(this, game))
+            () => Router.Navigate.Execute(new ManageSetViewModel(this, game))
         );
         GoPractice = ReactiveCommand.CreateFromObservable(
             () => Router.Navigate.Execute(new TrainViewModel(this, game))

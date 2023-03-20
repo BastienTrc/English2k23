@@ -12,11 +12,11 @@ public class Game
     {
         Name = name;
         Description = description;
-        _id = Guid.NewGuid();
+        _id = id;
         CardFrequency = CardFrequencyEnum.Middle;
     }
 
-    public AvaloniaList<QuestionStack> QuestionStacks { get; } = new();
+    public AvaloniaList<QuestionSet> QuestionStacks { get; } = new();
     public AvaloniaList<Question?> availableQuestions { get; } = new();
 
     private string Name { get; }
@@ -27,7 +27,27 @@ public class Game
 
     public void AddQuestionToGame(Question? question)
     {
+        if (AlreadyHas(availableQuestions,question))
+        {
+            return;
+        }
         availableQuestions.Add(question);
+    }
+
+    private bool AlreadyHas(AvaloniaList<Question?> questionsList, Question? newQuestion)
+    {
+        foreach (Question? question in questionsList)
+        {
+            if (question?.Expression == newQuestion?.Expression &&
+                 question?.Definition == newQuestion?.Definition &&
+                 question?.McqAnswers == newQuestion?.McqAnswers &&
+                 question?.PathToVideo == newQuestion?.PathToVideo)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void RemoveQuestionFromGame(Question? question)
@@ -38,25 +58,25 @@ public class Game
         availableQuestions.Remove(question);
     }
 
-    public void AddQuestionToStack(QuestionStack questionStack, Question? question)
+    public void AddQuestionToStack(QuestionSet questionSet, Question? question)
     {
-        questionStack.getQuestions().Add(question);
+        questionSet.getQuestions().Add(question);
     }
 
-    public void RemoveQuestionFromStack(QuestionStack questionStack, Question? question)
+    public void RemoveQuestionFromStack(QuestionSet questionSet, Question? question)
     {
-        questionStack.getQuestions().Remove(question);
+        questionSet.getQuestions().Remove(question);
     }
 
-    public QuestionStack AddStack(QuestionStack questionStack)
+    public QuestionSet AddStack(QuestionSet questionSet)
     {
-        QuestionStacks.Add(questionStack);
-        return questionStack;
+        QuestionStacks.Add(questionSet);
+        return questionSet;
     }
 
-    public ReactiveCommand<QuestionStack, Unit>? RemoveStack(QuestionStack questionStack)
+    public ReactiveCommand<QuestionSet, Unit>? RemoveStack(QuestionSet questionSet)
     {
-        QuestionStacks.Remove(questionStack);
+        QuestionStacks.Remove(questionSet);
         return null;
     }
 

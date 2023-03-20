@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace English2k23.Models;
 
-public class SaveStack
+public class SaveSet
 {
     [JsonInclude]
     public string? Description { get; set; }
@@ -17,14 +17,14 @@ public class SaveStack
     public List<Question?> questionList { get; set; }
     
     [JsonConstructor]
-    public SaveStack(){}
-    public SaveStack(QuestionStack stack)
+    public SaveSet(){}
+    public SaveSet(QuestionSet set)
     {
-        Name = stack.Name;
-        Description = stack.Description;
-        PictureUrl = stack.PictureUrl;
+        Name = set.Name;
+        Description = set.Description;
+        PictureUrl = set.PictureUrl;
         questionList = new List<Question>();
-        var ql = stack.getQuestions();
+        var ql = set.getQuestions();
         for (var i = 0; i < ql.Count; i++)
         {
             questionList.Add(ql[i]);

@@ -7,9 +7,9 @@ using ReactiveUI;
 
 namespace English2k23.Views;
 
-public partial class ManageStackView : ReactiveUserControl<ManageStackViewModel>
+public partial class ManageSetView : ReactiveUserControl<ManageSetViewModel>
 {
-    public ManageStackView()
+    public ManageSetView()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime
             {

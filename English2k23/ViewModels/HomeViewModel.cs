@@ -10,7 +10,7 @@ public class HomeViewModel : ReactiveObject, IRoutableViewModel
     {
         HostScreen = screen;
         GoEdit = ReactiveCommand.CreateFromObservable(
-            () => HostScreen.Router.Navigate.Execute(new ManageStackViewModel(HostScreen, game))
+            () => HostScreen.Router.Navigate.Execute(new ManageSetViewModel(HostScreen, game))
         );
 
         GoPractice = ReactiveCommand.CreateFromObservable(

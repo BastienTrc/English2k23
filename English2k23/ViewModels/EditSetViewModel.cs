@@ -7,14 +7,14 @@ using ReactiveUI;
 
 namespace English2k23.ViewModels;
 
-public class EditStackViewModel : ReactiveObject, IRoutableViewModel
+public class EditSetViewModel : ReactiveObject, IRoutableViewModel
 {
     private Question? _selectedQuestion;
 
-    public EditStackViewModel(IScreen hostScreen, Game game, QuestionStack questionStack)
+    public EditSetViewModel(IScreen hostScreen, Game game, QuestionSet questionSet)
     {
         HostScreen = hostScreen;
-        QuestionList = questionStack.getQuestions();
+        QuestionList = questionSet.getQuestions();
 
         if (QuestionList.Count != 0)
         {
@@ -22,7 +22,7 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
         }
 
         QuestionDeleted = ReactiveCommand.Create<Question>(
-            quest => game.RemoveQuestionFromStack(questionStack, quest));
+            quest => game.RemoveQuestionFromStack(questionSet, quest));
 
         //Handle add existing question command
         ShowDialogExist = new Interaction<AddExistingQuestionViewModel, AvaloniaList<Question>?>();
@@ -34,8 +34,8 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
             var result = await ShowDialogExist.Handle(addExistingQuestionViewModel);
             if (result != null)
                 foreach (var quest in result)
-                    if (!questionStack.getQuestions().Contains(quest))
-                        game.AddQuestionToStack(questionStack, quest);
+                    if (!questionSet.getQuestions().Contains(quest))
+                        game.AddQuestionToStack(questionSet, quest);
         });
 
         //Handle add new question command
@@ -49,7 +49,7 @@ public class EditStackViewModel : ReactiveObject, IRoutableViewModel
             if (result != null)
             {
                 game.AddQuestionToGame(result);
-                game.AddQuestionToStack(questionStack, result);
+                game.AddQuestionToStack(questionSet, result);
             }
         });
         

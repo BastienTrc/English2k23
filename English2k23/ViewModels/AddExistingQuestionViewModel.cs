@@ -11,7 +11,6 @@ public class AddExistingQuestionViewModel : ViewModelBase
     {
         ShowDialog = new Interaction<Unit, string?>();
         QuestionList = game.availableQuestions;
-        for (var i = 0; i < 15; i++) QuestionList.Add(new Question("apr" + i, "def", "1 ; 2 ; 3", "path", false));
 
         Validate = ReactiveCommand.Create(() =>
         {

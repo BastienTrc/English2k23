@@ -21,7 +21,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
     private static readonly Random Rnd = new();
     private readonly List<string> _houses = new() { "Gryffindor", "Slytherin", "HufflePuff", "Ravenclaw" };
 
-    private readonly QuestionStack _stack;
+    private readonly QuestionSet _set;
 
     private AvaloniaList<string>? _answersList;
 
@@ -57,14 +57,15 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
     private bool _tooLate; // If user took too much time to answer
     public MediaPlayer? MediaPlayer;
 
-    public PracticeViewModel(IScreen hostScreen, QuestionStack stack, bool isCompetitive)
+    public PracticeViewModel(IScreen hostScreen, QuestionSet set, bool isCompetitive)
     {
         HostScreen = hostScreen;
 
         IsCompetitive = isCompetitive;
         
-        _stack = stack;
-        var questionList = _stack.getQuestions();
+        _set = set;
+        var questionList = _set.getQuestions();
+        Shuffle(questionList);
         CurrQuestion = questionList[0];
         NbOfQuestion = questionList.Count;
 
@@ -181,7 +182,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
         });
 
         GoToResults = ReactiveCommand.CreateFromObservable(() =>
-            HostScreen.Router.Navigate.Execute(new ResultsViewModel(HostScreen, stack, Score, _scoreDetails)));
+            HostScreen.Router.Navigate.Execute(new ResultsViewModel(HostScreen, set, Score, _scoreDetails)));
 
         QuestionCountdown();
     }
@@ -286,7 +287,7 @@ public class PracticeViewModel : ReactiveObject, IRoutableViewModel
             return;
         }
 
-        CurrQuestion = _stack.getQuestions()[_i++];
+        CurrQuestion = _set.getQuestions()[_i++];
         ProgressBarValue += 100.0 / NbOfQuestion;
 
         ShowMcq = false;

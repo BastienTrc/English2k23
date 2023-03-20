@@ -7,14 +7,14 @@ using ReactiveUI;
 
 namespace English2k23.ViewModels;
 
-public class AddStackViewModel : ViewModelBase
+public class AddSetViewModel : ViewModelBase
 {
     private bool _isEnabled;
     private string? _pictureUrl;
     private string? _stackDescription;
     private string? _stackName;
 
-    public AddStackViewModel()
+    public AddSetViewModel()
     {
         ShowDialog = new Interaction<Unit, string?>();
         OpenFileDialogCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -26,8 +26,8 @@ public class AddStackViewModel : ViewModelBase
             PictureUrl = result;
         });
 
-        Validate = ReactiveCommand.Create<string, QuestionStack?>(cancelToken =>
-            cancelToken == "Cancel" ? null : new QuestionStack(_stackName!, _stackDescription!, PictureUrl));
+        Validate = ReactiveCommand.Create<string, QuestionSet?>(cancelToken =>
+            cancelToken == "Cancel" ? null : new QuestionSet(_stackName!, _stackDescription!, PictureUrl));
     }
 
     // Show open dialog file
@@ -35,7 +35,7 @@ public class AddStackViewModel : ViewModelBase
     public Interaction<Unit, string?> ShowDialog { get; }
 
     // Validate Fields and create questionStack
-    public ReactiveCommand<string, QuestionStack?> Validate { get; }
+    public ReactiveCommand<string, QuestionSet?> Validate { get; }
 
     public bool IsEnabled
     {

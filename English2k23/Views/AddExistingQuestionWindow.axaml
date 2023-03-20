@@ -34,7 +34,7 @@
                 <DataTemplate>
                     <Border CornerRadius="4" Padding="4" Classes="ListBoxBorder" HorizontalAlignment="Center">
                         <StackPanel Spacing="5">
-                            <TextBlock Text="{Binding Expression}" Classes="ItemBg" HorizontalAlignment="Center" />
+                            <TextBlock Text="{Binding Expression}" Classes="ItemBg" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>

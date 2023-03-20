@@ -26,16 +26,16 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 #endif
     }
 
-    public async Task DoShowDialogAsync(InteractionContext<AddStackViewModel, QuestionStack?> interaction)
+    public async Task DoShowDialogAsync(InteractionContext<AddSetViewModel, QuestionSet?> interaction)
     {
-        var dialog = new AddStackWindow();
+        var dialog = new AddSetWindow();
         dialog.Title = "Create a set of questions!";
         dialog.Opacity = 0.75;
 
 
         dialog.DataContext = interaction.Input;
 
-        var result = await dialog.ShowDialog<QuestionStack?>(this);
+        var result = await dialog.ShowDialog<QuestionSet?>(this);
         interaction.SetOutput(result);
     }
 

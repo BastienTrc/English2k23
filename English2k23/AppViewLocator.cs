@@ -11,11 +11,10 @@ public class AppViewLocator : IViewLocator
         return viewModel switch
         {
             HomeViewModel context => new HomeView { DataContext = context },
-            ManageStackViewModel context => new ManageStackView { DataContext = context },
+            ManageSetViewModel context => new ManageSetView { DataContext = context },
             TrainViewModel context => new TrainView { DataContext = context },
-            EditStackViewModel context => new EditStackView { DataContext = context },
+            EditSetViewModel context => new EditSetView { DataContext = context },
             PracticeViewModel context => new PracticeView { DataContext = context },
-            CompetitiveViewModel context => new CompetitiveView { DataContext = context },
             ResultsViewModel context => new ResultsView { DataContext = context },
             VideoPlayerModel context => new VideoPlayerWindow { DataContext = context },
 
