@@ -41,12 +41,12 @@
                      SelectedItem="{Binding McqChosed}" IsVisible="{Binding ShowMcq}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" ItemWidth="100" Margin="10" MaxWidth="240"/>
+                        <WrapPanel Orientation="Horizontal" Margin="10" MaxWidth="400"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
 
-            <StackPanel Orientation="Horizontal" Spacing="20">
+            <StackPanel Orientation="Horizontal" Spacing="20" HorizontalAlignment="Center">
                 <Button HorizontalAlignment="Center" Command="{Binding DisplayNone}"
                         IsVisible="{Binding !AnswerStyleChosen}">
                     <Image Source="../Assets/icons/NoHint.png" MaxHeight="100" MaxWidth="100" />
